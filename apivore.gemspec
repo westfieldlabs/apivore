@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
   s.authors     = ["Charles Horn"]
   s.email       = 'charles.horn@gmail.com'
-  s.files       = ["lib/apivore.rb", "data/apivore/swagger_2.0_schema.json"]
+  s.files       = ["lib/apivore.rb", "data/swagger_2.0_schema.json"]
   s.homepage    = 'http://github.com/hornc/apivore'
 end
