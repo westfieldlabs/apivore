@@ -27,14 +27,25 @@ module Apivore
       @json['paths']
     end
 
-    def has_model_for?(path)
-      # TODO: this needs work
-      models = true
-      # for swagger 2.0:
-      path[1].each do |method, value|
-        models &= !value['responses']['200']['schema']['items']['properties'].nil?
+    def has_model?(path, method, response = '200')
+      unless path[1][method]['responses'][response].nil?
+        schema = path[1][method]['responses'][response]['schema']
+        puts "DEBUG: #{schema}"
+        schema != nil
+      else
+        # this path / method combination does not have a 200 response defined, therefore FAIL
+        false
       end
-      models
+    end
+
+    def self.has_model?(path_method)
+      # Currently this method only looks a 200 reponses models, if they exist
+      unless path_method['responses']['200'].nil?
+        path_method['responses']['200']['schema'] != nil
+      else
+        # this path method does not have a 200 response defined, therefore FAIL
+        false
+      end
     end
   end
 end

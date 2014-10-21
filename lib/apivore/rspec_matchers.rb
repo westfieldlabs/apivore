@@ -16,12 +16,12 @@ module Apivore
       end
     end
 
-    matcher :have_models do
+    matcher :have_models_for_all_get_method_200_responses do
       match do |body|
         @d = ApiDescription.new(body)
         pass = true
         @d.paths.each do |path|
-          pass &= @d.has_model_for?(path)
+          pass &= @d.has_model?(path,'get', '200')
         end
       pass
       end
