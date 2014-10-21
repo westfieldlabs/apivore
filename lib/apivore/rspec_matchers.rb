@@ -4,11 +4,15 @@ module Apivore
     matcher :be_valid_swagger do |version|
       match do |body|
         @d = ApiDescription.new(body)
-        @d.swagger_version == version
+        (@d.swagger_version == version) & @d.is_valid?(version)
       end
 
       failure_message do |body|
-        "expected Swagger version #{version}, got #{@d.swagger_version}."
+        if version != @d.swagger_version
+          "expected Swagger version #{version}, got #{@d.swagger_version}."
+        else
+          "#{body} fails to validate as Swagger #{version}."
+        end
       end
     end
 
