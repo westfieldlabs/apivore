@@ -23,20 +23,39 @@ module Apivore
       result == []
     end
 
-    def paths()
-      @json['paths']
+    def paths(filter = nil)
+      result = @json['paths'].collect { |p| Path.new(p) }
+      unless filter.nil?
+        result.select! { |p| p.has_method?(filter) }
+      end
+      result
+    end
+  end
+
+  class Path
+    def initialize(path_data)
+      @name = path_data.first
+      @method_data = path_data.last
     end
 
-    def has_model?(path, method, response = '200')
-      # path is the parsed json 'path' from the api description
-      unless path[1][method]['responses'][response].nil?
-        schema = path[1][method]['responses'][response]['schema']
-        puts "DEBUG: #{schema}"
-        schema != nil
-      else
-        # this path / method combination does not have a 200 response defined, therefore return false
-        false
-      end
+    def has_method?(method)
+      @method_data.each { |m| return true if m.first == method }
+      false
+    end
+
+    def has_model?(method, response = '200')
+      !@method_data[method]['responses'][response].nil?
+    end
+
+    def get_model(method, response = '200')
+      object = SchemaObject.new(@method_data[method]['responses'][response])
+      object.model
+    end
+  end
+
+  class SchemaObject
+    def initialize(schema)
+       @body = schema
     end
 
   end

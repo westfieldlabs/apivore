@@ -20,8 +20,8 @@ module Apivore
       match do |body|
         @d = ApiDescription.new(body)
         pass = true
-        @d.paths.each do |path|
-          pass &= @d.has_model?(path,'get', '200')
+        @d.paths('get').each do |path|
+          pass &= path.has_model?('get', '200')
         end
       pass
       end
