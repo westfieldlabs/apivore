@@ -28,25 +28,17 @@ module Apivore
     end
 
     def has_model?(path, method, response = '200')
+      # path is the parsed json 'path' from the api description
       unless path[1][method]['responses'][response].nil?
         schema = path[1][method]['responses'][response]['schema']
         puts "DEBUG: #{schema}"
         schema != nil
       else
-        # this path / method combination does not have a 200 response defined, therefore FAIL
+        # this path / method combination does not have a 200 response defined, therefore return false
         false
       end
     end
 
-    def self.has_model?(path_method)
-      # Currently this method only looks a 200 reponses models, if they exist
-      unless path_method['responses']['200'].nil?
-        path_method['responses']['200']['schema'] != nil
-      else
-        # this path method does not have a 200 response defined, therefore FAIL
-        false
-      end
-    end
   end
 end
 
