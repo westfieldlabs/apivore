@@ -24,7 +24,7 @@ module Apivore
     end
 
     def paths(filter = nil)
-      result = @json['paths'].collect { |p| Path.new(p) }
+      result = @json['paths'].collect { |p| Path.new(p, @base_path) }
       unless filter.nil?
         result.select! { |p| p.has_method?(filter) }
       end
@@ -33,8 +33,10 @@ module Apivore
   end
 
   class Path
-    def initialize(path_data)
+    attr_reader :name, :full_path
+    def initialize(path_data, base_path)
       @name = path_data.first
+      @full_path = base_path + @name
       @method_data = path_data.last
     end
 
@@ -44,7 +46,12 @@ module Apivore
     end
 
     def has_model?(method, response = '200')
-      !@method_data[method]['responses'][response].nil?
+      unless @method_data[method]['responses'][response].nil?
+        object = SchemaObject.new(@method_data[method]['responses'][response])
+        object.has_model?
+      else
+        false
+      end
     end
 
     def get_model(method, response = '200')
@@ -58,6 +65,10 @@ module Apivore
        @body = schema
     end
 
+    def has_model?
+      # TODO: have this check references to definitions from the full Api Definition
+      false
+    end
   end
 end
 
