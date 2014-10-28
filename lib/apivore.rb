@@ -4,7 +4,7 @@ require 'apivore/rspec_matchers'
 
 module Apivore
   class ApiDescription
-    attr_reader :swagger_version
+    attr_reader :swagger_version, :base_path
     def initialize(swagger)
       @json = JSON.parse(swagger)
       @swagger_version = @json['swagger']
@@ -24,7 +24,7 @@ module Apivore
     end
 
     def paths(filter = nil)
-      result = @json['paths'].collect { |p| Path.new(p, @base_path) }
+      result = @json['paths'].collect { |p| Path.new(p, self) }
       unless filter.nil?
         result.select! { |p| p.has_method?(filter) }
       end
@@ -34,9 +34,10 @@ module Apivore
 
   class Path
     attr_reader :name, :full_path
-    def initialize(path_data, base_path)
+    def initialize(path_data, api_description)
       @name = path_data.first
-      @full_path = base_path + @name
+      @api_description = api_description
+      @full_path = @api_description.base_path + @name
       @method_data = path_data.last
     end
 
@@ -47,7 +48,7 @@ module Apivore
 
     def has_model?(method, response = '200')
       unless @method_data[method]['responses'][response].nil?
-        object = SchemaObject.new(@method_data[method]['responses'][response])
+        object = SchemaObject.new(@method_data[method]['responses'][response], @api_description)
         object.has_model?
       else
         false
@@ -61,12 +62,16 @@ module Apivore
   end
 
   class SchemaObject
-    def initialize(schema)
+    def initialize(schema, api_description)
        @body = schema
+       @api_description = api_description
     end
 
     def has_model?
       # TODO: have this check references to definitions from the full Api Definition
+      is_array = @body['schema']['type'] && @body['schema']['type'] == 'array'
+      puts @body
+      puts is_array
       false
     end
   end
