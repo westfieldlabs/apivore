@@ -16,7 +16,7 @@ module Apivore
       end
     end
 
-    matcher :have_models_for_all_get_method_200_responses do
+    matcher :have_models_for_all_index_results do
       match do |body|
         @d = ApiDescription.new(body)
         pass = true
@@ -24,6 +24,12 @@ module Apivore
           pass &= path.has_model?('get', '200')
         end
       pass
+      end
+    end
+
+    matcher :have_models_for_all_show_results do
+      match do |body|
+        false
       end
     end
   end
