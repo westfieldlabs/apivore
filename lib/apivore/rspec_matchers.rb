@@ -21,9 +21,15 @@ module Apivore
         @d = ApiDescription.new(body)
         pass = true
         @d.paths('get').each do |path|
+          @current_path = path
           pass &= path.has_model?('get', '200')
+          return pass if !pass # return now if the last check failed
         end
       pass
+      end
+
+      failure_message do |body|
+        "Unable to find a valid model for #{@current_path.name} get 200 response."
       end
     end
 

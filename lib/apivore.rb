@@ -33,13 +33,13 @@ module Apivore
 
     def get_definition(ref)
       path = ref.split('/')[1..-1]
-      description = @json
+      d = @json
       begin
-        path.each { |p| description = description[p] }
+        path.each { |p| d = d[p] }
       rescue
-        raise "Unable to find definition #{ref}!"
+        raise "Unable to find definition section in the api description!"
       end
-      description
+      d
     end
 
   end
@@ -84,7 +84,7 @@ module Apivore
       if item['$ref']  # if this is a reference, not the data structure itself
         item = @api_description.get_definition(item['$ref'])
       end
-      not item.nil?
+      item['properties'] && item['properties'].first # the model should have at least one property
     end
   end
 end
