@@ -12,15 +12,14 @@ module Apivore
       @base_path = @json['basePath']
     end
 
-    def is_valid?(version)
+    def validate(version)
       case version
       when '2.0'
         schema = File.read(File.expand_path("../../data/swagger_2.0_schema.json", __FILE__))
       else
         raise "Unknown/unsupported Swagger version to validate against: #{version}"
       end
-      result = JSON::Validator.fully_validate(schema, @json)
-      result == []
+      JSON::Validator.fully_validate(schema, @json)
     end
 
     def paths(filter = nil)
@@ -59,7 +58,7 @@ module Apivore
     end
 
     def has_model?(method, response = '200')
-      unless @method_data[method]['responses'][response].nil?
+      if @method_data[method] && @method_data[method]['responses'] && @method_data[method]['responses'][response]
         object = SchemaObject.new(@method_data[method]['responses'][response], @api_description)
         object.has_model?
       else
@@ -75,6 +74,7 @@ module Apivore
     end
 
     def has_model?
+      return false if !@body['schema']
       is_array = @body['schema']['type'] && @body['schema']['type'] == 'array'
       if is_array
         item = @body['schema']['items']
