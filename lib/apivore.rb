@@ -22,6 +22,10 @@ module Apivore
       JSON::Validator.fully_validate(schema, @json)
     end
 
+    def valid(version)
+      validate(version) == []
+    end
+
     def paths(filter = nil)
       result = @json['paths'].collect { |p| Path.new(p, self) }
       unless filter.nil?
