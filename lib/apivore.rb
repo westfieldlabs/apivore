@@ -30,6 +30,18 @@ module Apivore
       end
       result
     end
+
+    def get_definition(ref)
+      path = ref.split('/')[1..-1]
+      description = @json
+      begin
+        path.each { |p| description = description[p] }
+      rescue
+        raise "Unable to find definition #{ref}!"
+      end
+      description
+    end
+
   end
 
   class Path
@@ -54,11 +66,6 @@ module Apivore
         false
       end
     end
-
-    def get_model(method, response = '200')
-      object = SchemaObject.new(@method_data[method]['responses'][response])
-      object.model
-    end
   end
 
   class SchemaObject
@@ -68,11 +75,16 @@ module Apivore
     end
 
     def has_model?
-      # TODO: have this check references to definitions from the full Api Definition
       is_array = @body['schema']['type'] && @body['schema']['type'] == 'array'
-      puts @body
-      puts is_array
-      false
+      if is_array
+        item = @body['schema']['items']
+      else
+        item = @body['schema']
+      end
+      if item['$ref']  # if this is a reference, not the data structure itself
+        item = @api_description.get_definition(item['$ref'])
+      end
+      not item.nil?
     end
   end
 end
