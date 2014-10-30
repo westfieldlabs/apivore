@@ -84,11 +84,16 @@ module Apivore
     end
 
     def has_model?(method, response = '200')
+      model = model(method, response)
+      puts model
+      model && !model.first.nil? # the model should exist and have at least one element
+    end
+
+    def model(method, response = '200')
       if @method_data[method] && @method_data[method]['responses'] && @method_data[method]['responses'][response]
-        object = SchemaObject.new(@method_data[method]['responses'][response], @api_description)
-        object.has_model?
+        SchemaObject.new(@method_data[method]['responses'][response], @api_description).model
       else
-        false
+        nil
       end
     end
   end
@@ -99,10 +104,13 @@ module Apivore
        @api_description = api_description
     end
 
-    def has_model?
-      return false if !@body['schema']
-      is_array = @body['schema']['type'] && @body['schema']['type'] == 'array'
-      if is_array
+    def array?
+      @body['schema']['type'] && @body['schema']['type'] == 'array'
+    end
+
+    def model
+      return nil if !@body['schema']
+      if array?
         item = @body['schema']['items']
       else
         item = @body['schema']
@@ -110,7 +118,7 @@ module Apivore
       if item['$ref']  # if this is a reference, not the data structure itself
         item = @api_description.get_definition(item['$ref'])
       end
-      item['properties'] && item['properties'].first # the model should have at least one property
+      item['properties']
     end
   end
 end
