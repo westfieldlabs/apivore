@@ -83,14 +83,9 @@ module Apivore
       false
     end
 
-    def has_model?(method, response = '200')
-      model = model(method, response)
-      model && !model.first.nil? # the model should exist and have at least one element
-    end
-
-    def model(method, response = '200')
+    def schema(method, response = '200')
       if @method_data[method] && @method_data[method]['responses'] && @method_data[method]['responses'][response]
-        SchemaObject.new(@method_data[method]['responses'][response], @api_description).model
+        SchemaObject.new(@method_data[method]['responses'][response], @api_description)
       else
         nil
       end

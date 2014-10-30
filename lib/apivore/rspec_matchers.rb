@@ -25,7 +25,7 @@ module Apivore
         pass = true
         @d.paths('get').each do |path|
           @current_path = path
-          pass &= path.has_model?('get', '200')
+          pass &= path.schema('get', '200') && path.schema('get', '200').model.first
           return pass if !pass # return now if the last check failed
         end
       pass
@@ -33,6 +33,12 @@ module Apivore
 
       failure_message do |body|
         "Unable to find a valid model for #{@current_path.name} get 200 response."
+      end
+    end
+
+    matcher :conform_to_the_documented_model_for do |path|
+      match do |body|
+        puts path.model('get', '200')
       end
     end
   end
