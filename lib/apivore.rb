@@ -4,12 +4,13 @@ require 'apivore/rspec_matchers'
 
 module Apivore
   class ApiDescription
-    attr_reader :swagger_version, :base_path
+    attr_reader :swagger_version, :base_path, :substitutions
     def initialize(swagger)
       @json = JSON.parse(swagger)
       @swagger_version = @json['swagger']
       @apis = @json['apis']
       @base_path = @json['basePath']
+      @substitutions = {}
     end
 
     def validate(version)
@@ -45,15 +46,36 @@ module Apivore
       d
     end
 
+    def append_substitution(path_type, name, value)
+      @substitutions[path_type] ||= {}
+      @substitutions[path_type].update({name => value})
+    end
   end
 
   class Path
-    attr_reader :name, :full_path
+    attr_reader :name
     def initialize(path_data, api_description)
       @name = path_data.first
       @api_description = api_description
-      @full_path = @api_description.base_path + @name
       @method_data = path_data.last
+    end
+
+    def full_path
+      path = @api_description.base_path + @name
+      matchdata = path.scan(/\{([^}]+)\}/)
+      matchdata.each do |param|
+        unless @api_description.substitutions[@name]
+          raise "  No substitution data exists for the path named #{@name}. Add some using the append_substitution() method."
+        end
+        if @api_description.substitutions[@name].keys.include? param.first
+          value = @api_description.substitutions[@name][param.first]
+          puts "DEBUG: We're going to use the value #{value} for #{param.first} in path #{@name}"
+          path.sub!("{#{param.first}}", value.to_s)
+        else
+          raise " Substitution values not found for {#{param.first}} in path #{@name}"
+        end
+      end
+      path
     end
 
     def has_method?(method)
