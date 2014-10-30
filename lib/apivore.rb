@@ -112,7 +112,7 @@ module Apivore
       if item['$ref']  # if this is a reference, not the data structure itself
         item = @api_description.get_definition(item['$ref'])
       end
-      item['properties']
+      item
     end
   end
 end

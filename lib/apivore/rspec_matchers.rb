@@ -38,7 +38,22 @@ module Apivore
 
     matcher :conform_to_the_documented_model_for do |path|
       match do |body|
-        puts path.model('get', '200')
+        body = JSON.parse(body)
+        schema = path.schema('get', '200')
+        if schema.array?
+          item = body.first
+        else
+          item = body
+        end
+
+        @results = JSON::Validator.fully_validate(schema.model, item)
+        @results == []
+      end
+
+      failure_message do |body|
+        msg = "The response for #{path.name} fails to validate against the documented schema:\n"
+        @results.each { |r| msg += "  #{r}\n" }
+        msg
       end
     end
   end
