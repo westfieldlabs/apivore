@@ -85,7 +85,6 @@ module Apivore
 
     def has_model?(method, response = '200')
       model = model(method, response)
-      puts model
       model && !model.first.nil? # the model should exist and have at least one element
     end
 
