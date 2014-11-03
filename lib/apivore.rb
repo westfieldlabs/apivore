@@ -1,5 +1,7 @@
 require 'json'
 require 'json-schema'
+require 'rspec'
+require 'apivore/rspec_builder'
 require 'apivore/rspec_matchers'
 
 module Apivore
