@@ -12,7 +12,6 @@ module Apivore
       @swagger_version = @json['swagger']
       @apis = @json['apis']
       @base_path = @json['basePath']
-      @substitutions = {}
     end
 
     def validate(version)
@@ -46,11 +45,6 @@ module Apivore
         raise "Unable to find definition section in the api description!"
       end
       d
-    end
-
-    def append_substitution(path_type, name, value)
-      @substitutions[path_type] ||= {}
-      @substitutions[path_type].update({name => value})
     end
   end
 
