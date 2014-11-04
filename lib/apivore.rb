@@ -63,21 +63,7 @@ module Apivore
     end
 
     def full_path
-      path = @api_description.base_path + @name
-      matchdata = path.scan(/\{([^}]+)\}/)
-      matchdata.each do |param|
-        unless @api_description.substitutions[@name]
-          raise "  No substitution data exists for the path named #{@name}. Add some using the append_substitution() method."
-        end
-        if @api_description.substitutions[@name].keys.include? param.first
-          value = @api_description.substitutions[@name][param.first]
-          puts "DEBUG: We're going to use the value #{value} for #{param.first} in path #{@name}"
-          path.sub!("{#{param.first}}", value.to_s)
-        else
-          raise " Substitution values not found for {#{param.first}} in path #{@name}"
-        end
-      end
-      path
+      @api_description.base_path + @name
     end
 
     def has_method?(method)
