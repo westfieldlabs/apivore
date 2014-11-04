@@ -7,7 +7,7 @@ module Apivore
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
 
-    def test_setup(path, method, response, &block)
+    def apivore_setup(path, method, response, &block)
       @@setups ||= {}
       @@setups[path] ||= {}
       @@setups[path][method] ||= {}
