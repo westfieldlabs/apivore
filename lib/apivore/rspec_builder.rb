@@ -1,4 +1,6 @@
 require 'apivore/rspec_matchers'
+require 'action_controller'
+require 'action_dispatch'
 
 module Apivore
   module RspecBuilder
