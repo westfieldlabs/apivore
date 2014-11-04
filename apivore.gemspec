@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'apivore'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
   s.date        = '2014-11-16'
   s.summary     = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
   s.description = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
