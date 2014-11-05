@@ -9,6 +9,4 @@ Gem::Specification.new do |s|
   s.files       = ['lib/apivore.rb', 'lib/apivore/rspec_matchers.rb', 'lib/apivore/rspec_builder.rb', 'data/swagger_2.0_schema.json']
   s.homepage    = 'http://github.com/hornc/apivore'
   s.add_runtime_dependency 'json-schema'
-  s.add_dependency "action_controller"
-  s.add_dependency "action_dispatch"
 end
