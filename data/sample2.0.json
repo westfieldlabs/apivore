@@ -1,0 +1,163 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "master",
+    "title": "Westfield Centre Directory Service"
+   },
+  "host": "api.development.westfieldlabs.com",
+  "basePath": "/api/centre-directory/master",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/services.json": {
+      "get": {
+        "description": "Services available to shoppers in Westfield Centres",
+        "operationId": "Services#index",
+        "responses": {
+          "200": {
+            "description": "service index response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/service"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services/{id}.json": {
+      "get": {
+        "description": "Returns a service.",
+        "operationId": "Services#show",
+        "responses": {
+          "200": {
+            "description": "show service response",
+            "schema": {
+              "$ref": "#/definitions/service"
+            }
+          }
+        }
+
+      }
+    },
+    "/service_types.json": {
+      "get": {
+        "description": "Returns all centre directory service types.",
+        "operationId": "ServiceTypes#index",
+        "responses": {
+          "200": {
+            "description": "service type index response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/service_type"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service_types/{id}.json": {
+      "get": {
+        "description": "Returns a service type.",
+        "operationId": "ServiceTypes#show",
+        "responses": {
+          "200": {
+            "description": "service type show response",
+            "schema": {
+              "$ref": "#/definitions/service_type"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "service": {
+      "required": [
+        "id",
+        "service_type",
+        "centre_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service Id"
+        },
+        "serviceType": {
+          "type": "string",
+          "description": "Service Type"
+        },
+        "centreId": {
+          "type": "string",
+          "description": "Centre Id"
+        },
+        "imageRef": {
+          "type": "string",
+          "description": "Image Ref"
+        },
+        "shortTitle": {
+          "type": "string",
+          "description": "Short Name"
+        },
+        "longTitle": {
+          "type": "string",
+          "description": "Long Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "Sort Order"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone Number"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email Address"
+        },
+        "url": {
+          "type": "string",
+          "description": "Service Url"
+        }
+      }
+    },
+    "service_type": {
+      "required": [
+        "id",
+        "name",
+        "country"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service Type Id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Service Type Name"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country"
+        }
+      }
+    }
+  }
+}

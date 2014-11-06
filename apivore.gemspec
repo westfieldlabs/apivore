@@ -1,3 +1,5 @@
+$:.push File.expand_path("../lib", __FILE__)
+
 Gem::Specification.new do |s|
   s.name        = 'apivore'
   s.version     = '0.0.1'
@@ -9,4 +11,10 @@ Gem::Specification.new do |s|
   s.files       = ['lib/apivore.rb', 'lib/apivore/rspec_matchers.rb', 'lib/apivore/rspec_builder.rb', 'data/swagger_2.0_schema.json']
   s.homepage    = 'http://github.com/hornc/apivore'
   s.add_runtime_dependency 'json-schema'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'actionpack'
+  s.add_development_dependency 'activesupport'
+
 end

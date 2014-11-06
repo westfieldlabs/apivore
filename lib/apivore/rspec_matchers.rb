@@ -1,3 +1,5 @@
+require 'json-schema'
+
 module Apivore
   module RspecMatchers
     extend RSpec::Matchers::DSL
