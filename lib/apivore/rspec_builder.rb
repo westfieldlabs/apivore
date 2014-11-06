@@ -26,7 +26,7 @@ module Apivore
     def apivore_swagger(swagger_path)
       session = ActionDispatch::Integration::Session.new(Rails.application)
       session.get swagger_path
-      Apivore::ApiDescription.new JSON.parse(session.response.body)
+      Apivore::Swagger.new JSON.parse(session.response.body)
     end
 
     def validate(swagger_path)

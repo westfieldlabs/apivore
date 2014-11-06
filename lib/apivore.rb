@@ -2,7 +2,7 @@ require 'apivore/rspec_builder'
 require 'apivore/rspec_matchers'
 
 module Apivore
-  class ApiDescription < Hashie::Mash
+  class Swagger < Hashie::Mash
 
     def validate
       case version
@@ -22,19 +22,16 @@ module Apivore
       paths.each do |path, path_data|
         path_data.each do |verb, method_data|
           method_data.responses.each do |response_code, response_data|
-            block.call(path, verb, response_code, get_schema(definitions))
+            block.call(path, verb, response_code, get_schema(response_data.schema))
           end
         end
       end
     end
 
-    def get_schema(definitions)
+    def get_schema(schema)
       ref = nil
-      if schema && schema.type
-        ref = schema.items['$ref']
-      elsif schema
-        ref = schema['$ref']
-      end
+      ref = schema['$ref'] if schema
+      ref = schema.items['$ref'] if schema && schema.items
       definitions[ref.split('/').last] if ref
     end
 
