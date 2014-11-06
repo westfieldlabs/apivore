@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     apivore (0.0.1)
+      hashie
       json-schema
 
 GEM
@@ -25,6 +26,7 @@ GEM
     builder (3.2.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
+    hashie (3.3.1)
     i18n (0.6.11)
     json (1.8.1)
     json-schema (2.4.1)

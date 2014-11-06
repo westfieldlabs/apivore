@@ -5,25 +5,20 @@ module Apivore
     extend RSpec::Matchers::DSL
     matcher :be_valid_swagger do |version|
       match do |body|
-        @d = ApiDescription.new(body)
-        @results = @d.validate(version)
-        (@d.swagger_version == version) && (@results == [])
+        @api_description = ApiDescription.new(JSON.parse(body))
+        @api_description.validate == []
       end
 
       failure_message do |body|
-        if version != @d.swagger_version
-          "expected Swagger version #{version}, got #{@d.swagger_version}."
-        else
-          msg = "The document fails to validate as Swagger #{version}:\n"
-          @results.each { |r| msg += "  #{r}\n" }
-          msg
-        end
+        msg = "The document fails to validate as Swagger #{@api_description.version}:\n\n"
+        msg += @api_description.validate.join "\n\n"
+        msg
       end
     end
 
     matcher :have_models_for_all_get_endpoints do
       match do |body|
-        @d = ApiDescription.new(body)
+        @d = ApiDescription.new(JSON.parse(body))
         pass = true
         @d.paths('get').each do |path|
           @current_path = path
@@ -38,17 +33,16 @@ module Apivore
       end
     end
 
-    matcher :conform_to_the_documented_model_for do |path|
+    matcher :conform_to_the_documented_model_for do |schema|
       match do |body|
         body = JSON.parse(body)
-        schema = path.schema('get', '200')
         if schema.array?
           item = body.first
         else
           item = body
         end
 
-        @results = JSON::Validator.fully_validate(schema.model, item)
+        @results = JSON::Validator.fully_validate(schema, item)
         @results == []
       end
 
