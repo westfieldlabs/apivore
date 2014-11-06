@@ -31,6 +31,15 @@
             }
           }
         }
+      },
+      "post": {
+        "description": "Creates a service.",
+        "operationId": "Services#post",
+        "responses": {
+          "204": {
+            "description": "Service created"
+          }
+        }
       }
     },
     "/services/{id}.json": {
@@ -45,7 +54,24 @@
             }
           }
         }
-
+      },
+      "put": {
+        "description": "Update a service.",
+        "operationId": "Services#put",
+        "responses": {
+          "204": {
+            "description": "Service updated"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a service.",
+        "operationId": "Services#delete",
+        "responses": {
+          "204": {
+            "description": "Service deleted"
+          }
+        }
       }
     },
     "/service_types.json": {
@@ -135,27 +161,6 @@
         "url": {
           "type": "string",
           "description": "Service Url"
-        }
-      }
-    },
-    "service_type": {
-      "required": [
-        "id",
-        "name",
-        "country"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "description": "Service Type Id"
-        },
-        "name": {
-          "type": "string",
-          "description": "Service Type Name"
-        },
-        "country": {
-          "type": "string",
-          "description": "Country"
         }
       }
     }
