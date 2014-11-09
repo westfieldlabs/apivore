@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/hornc/apivore'
   s.add_runtime_dependency 'json-schema'
   s.add_runtime_dependency 'hashie'
+  s.add_development_dependency 'pry'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
