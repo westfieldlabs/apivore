@@ -1,6 +1,7 @@
 require 'apivore/rspec_matchers'
 require 'action_controller'
 require 'action_dispatch'
+require 'hashie'
 
 module Apivore
   module RspecBuilder
@@ -9,56 +10,58 @@ module Apivore
 
     def apivore_setup(path, method, response, &block)
       @@setups ||= {}
-      @@setups[path] ||= {}
-      @@setups[path][method] ||= {}
-      @@setups[path][method][response] = block
+      @@setups[path + method + response] = block
+    end
+
+    def run_apivore_setup(path, method, response_code, base_path)
+      key = path + method + response_code
+      if @@setups[key]
+        @@setups[key].call.each do |key, data|
+          path = path.gsub "{#{key}}", data.to_s
+        end
+      end
+      base_path + path
+    end
+
+    def apivore_swagger(swagger_path)
+      session = ActionDispatch::Integration::Session.new(Rails.application)
+      session.get swagger_path
+      Apivore::Swagger.new JSON.parse(session.response.body)
     end
 
     def validate(swagger_path)
 
       describe "the swagger documentation" do
-        before {
-          get swagger_path
-        }
+        before { get swagger_path }
         subject { body }
-        it { should be_valid_swagger '2.0' }
-        it { should have_models_for_all_get_endpoints } # this is not required by the swagger spec, but is helpful for these tests for the momemt
+        it { should be_valid_swagger }
+        it { should have_models_for_all_get_endpoints }
       end
 
-      describe "GET paths" do
-        # Build the various path tests by reading the swagger.json and iterating through the paths BEFORE the rspec tests are run
-        session = ActionDispatch::Integration::Session.new(Rails.application)
-        session.get swagger_path
-        swagger = Apivore::ApiDescription.new(session.response.body)
+      swagger = apivore_swagger(swagger_path)
+      swagger.each_response do |path, method, response_code, schema|
 
-        method = 'get'
-        http_response = '200'
-        swagger.paths(method).each do |path|
+        describe "path #{path} metthod #{method} response #{response_code}" do
+          it "responds with the specified models" do
 
-          describe "#{path.name} #{method} response" do
-            if @@setups[path.name]
-              before {
-                values = (@@setups[path.name][method][http_response]).call
-                @full_path = path.full_path
-                matchdata = @full_path.scan(/\{([^}]+)\}/)
-                if matchdata
-                  matchdata.each do |param|
-                    if values[param.first]
-                      @full_path.gsub!("{#{param.first}}", values[param.first].to_s)
-                    end
-                  end
-                end
-              }
+            full_path = run_apivore_setup(
+              path,
+              method,
+              response_code,
+              swagger['basePath']
+            )
+
+            send(method, full_path) # EG: get(full_path)
+            expect(response).to have_http_status(response_code)
+
+            if schema
+              expect(response.body).to conform_to_the_documented_model_for(schema)
             end
 
-            it "responds with the specified models" do
-              get @full_path || path.full_path
-              expect(response).to have_http_status(:success)
-              expect(response.body).to conform_to_the_documented_model_for(path)
-            end
           end
         end
       end
+
     end
   end
 end

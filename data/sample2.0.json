@@ -1,0 +1,199 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "master",
+    "title": "Westfield Centre Directory Service"
+   },
+  "host": "api.test.westfieldlabs.com",
+  "basePath": "/api/centre-directory/master",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+      "/services.json": {
+        "get": {
+          "description": "Services available to shoppers in Westfield Centres",
+          "operationId": "Services#index",
+          "responses": {
+            "200": {
+              "description": "service index response",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/services"
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "description": "Creates a service.",
+          "operationId": "Services#post",
+          "responses": {
+            "204": {
+              "description": "Service created"
+            }
+          }
+        }
+      },
+      "/services/{id}.json": {
+        "get": {
+          "description": "Returns a service.",
+          "operationId": "Services#show",
+          "responses": {
+            "200": {
+              "description": "show service response",
+              "schema": {
+                "$ref": "#/definitions/service"
+              }
+            }
+          }
+        },
+        "put": {
+          "description": "Update a service.",
+          "operationId": "Services#put",
+          "responses": {
+            "204": {
+              "description": "Service updated"
+            }
+          }
+        },
+        "delete": {
+          "description": "Deletes a service.",
+          "operationId": "Services#delete",
+          "responses": {
+            "204": {
+              "description": "Service deleted"
+            }
+          }
+        }
+      }
+  },
+  "definitions": {
+    "service": {
+      "type": "object",
+      "required": [
+        "id",
+        "service_type",
+        "centre_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service Id"
+        },
+        "service_type": {
+          "type": "string",
+          "description": "Service Type"
+        },
+        "centre_id": {
+          "type": "string",
+          "description": "Centre Id"
+        },
+        "image_ref": {
+          "type": ["string", "null"],
+          "description": "Image Ref"
+        },
+        "short_title": {
+          "type": ["string", "null"],
+          "description": "Short Name"
+        },
+        "long_title": {
+          "type": ["string", "null"],
+          "description": "Long Name"
+        },
+        "description": {
+          "type": ["string", "null"],
+          "description": "Description"
+        },
+        "active": {
+          "type": ["boolean", "null"],
+          "description": "Active"
+        },
+        "sort_order": {
+          "type": ["integer", "null"],
+          "description": "Sort Order"
+        },
+        "phone_number": {
+          "type": ["string", "null"],
+          "description": "Phone Number"
+        },
+        "email": {
+          "type": ["string", "null"],
+          "description": "Email Address"
+        },
+        "url": {
+          "type": ["string", "null"],
+          "description": "Service Url"
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "service_type",
+          "centre_id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Service Id"
+          },
+          "service_type": {
+            "type": "string",
+            "description": "Service Type"
+          },
+          "centre_id": {
+            "type": "string",
+            "description": "Centre Id"
+          },
+          "image_ref": {
+            "type": ["string", "null"],
+            "description": "Image Ref"
+          },
+          "shor_title": {
+            "type": ["string", "null"],
+            "description": "Short Name"
+          },
+          "long_title": {
+            "type": ["string", "null"],
+            "description": "Long Name"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Description"
+          },
+          "active": {
+            "type": ["boolean","null"],
+            "description": "Active"
+          },
+          "sort_order": {
+            "type": ["integer","null"],
+            "description": "Sort Order"
+          },
+          "phone_number": {
+            "type": ["string", "null"],
+            "description": "Phone Number"
+          },
+          "email": {
+            "type": ["string", "null"],
+            "description": "Email Address"
+          },
+          "url": {
+            "type": ["string", "null"],
+            "description": "Service Url"
+          }
+        }
+      }
+    }
+  }
+}
