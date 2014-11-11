@@ -22,6 +22,8 @@ module Apivore
       paths.each do |path, path_data|
         path_data.each do |verb, method_data|
           method_data.responses.each do |response_code, response_data|
+            schema_location = "#/paths/#{path.gsub('/','\/')}/#{verb}/#{response_code}/schema"
+            # block.call(path, verb, response_code, schema_location)
             block.call(path, verb, response_code, get_schema(response_data.schema))
           end
         end
@@ -36,5 +38,4 @@ module Apivore
     end
 
   end
-
 end

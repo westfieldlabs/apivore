@@ -55,7 +55,7 @@ module Apivore
             expect(response).to have_http_status(response_code)
 
             if schema
-              expect(response.body).to conform_to_the_documented_model_for(schema)
+              expect(response.body).to conform_to_the_documented_model_for(swagger, schema)
             end
 
           end

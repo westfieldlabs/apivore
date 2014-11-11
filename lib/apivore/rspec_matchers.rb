@@ -33,9 +33,11 @@ module Apivore
       end
     end
 
-    matcher :conform_to_the_documented_model_for do |schema|
+    matcher :conform_to_the_documented_model_for do |swagger, fragment|
       match do |body|
-        @errors = JSON::Validator.fully_validate(schema, body, strict: false, validate_schema: true, version: 'draft4')
+        body = JSON.parse(body)
+        # @errors = JSON::Validator.fully_validate(swagger, body, fragment: fragment, strict: true)
+        @errors = JSON::Validator.fully_validate(fragment, body, strict: true, validate_schema: true, version: 'draft4')
         @errors.empty?
       end
 
