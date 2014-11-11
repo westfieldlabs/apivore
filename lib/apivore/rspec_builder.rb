@@ -41,7 +41,7 @@ module Apivore
       swagger = apivore_swagger(swagger_path)
       swagger.each_response do |path, method, response_code, schema|
 
-        describe "path #{path} metthod #{method} response #{response_code}" do
+        describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
 
             full_path = run_apivore_setup(
