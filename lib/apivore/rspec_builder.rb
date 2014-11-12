@@ -15,7 +15,7 @@ module Apivore
     end
 
     def get_apivore_setup(path, method, response)
-      @@setups[path + method + response].try :call
+      @@setups[path + method + response].try(:call) || {}
     end
 
     def apivore_build_path(path, data)
@@ -42,14 +42,13 @@ module Apivore
 
       swagger = apivore_swagger(swagger_path)
       swagger.each_response do |path, method, response_code, fragment|
-
-        data = get_apivore_setup(path, method, response_code)
-        full_path = apivore_build_path(path + swagger.base_path, data)
-
-        describe "path #{full_path} method #{method} response #{response_code}" do
+        describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
 
-            send(method, full_path) # EG: get(full_path)
+            data = get_apivore_setup(path, method, response_code)
+            full_path = apivore_build_path(path + swagger.base_path, data)
+
+            send(method, full_path, data['_data']) # EG: get(full_path)
             expect(response).to have_http_status(response_code)
 
             if fragment
