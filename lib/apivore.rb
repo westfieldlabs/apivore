@@ -22,20 +22,22 @@ module Apivore
       paths.each do |path, path_data|
         path_data.each do |verb, method_data|
           method_data.responses.each do |response_code, response_data|
-            schema_location = "#/paths/#{path.gsub('/','\/')}/#{verb}/#{response_code}/schema"
-            # block.call(path, verb, response_code, schema_location)
-            block.call(path, verb, response_code, get_schema(response_data.schema))
+            schema_location = nil
+            if response_data.schema
+              schema_location = Fragment.new ['#', 'paths', path, verb, 'responses', response_code, 'schema']
+            end
+            block.call(path, verb, response_code, schema_location)
           end
         end
       end
     end
+  end
 
-    def get_schema(schema)
-      ref = nil
-      ref = schema['$ref'] if schema
-      ref = schema.items['$ref'] if schema && schema.items
-      definitions[ref.split('/').last] if ref
+  # This is a workaround for json-schema's fragment validation which does not allow paths to contain forward slashes
+  #  current json-schema attempts to split('/') on a string path to produce an array.
+  class Fragment < Array
+    def split(options = nil)
+      self
     end
-
   end
 end

@@ -39,7 +39,7 @@ module Apivore
       end
 
       swagger = apivore_swagger(swagger_path)
-      swagger.each_response do |path, method, response_code, schema|
+      swagger.each_response do |path, method, response_code, fragment|
 
         describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
@@ -54,8 +54,8 @@ module Apivore
             send(method, full_path) # EG: get(full_path)
             expect(response).to have_http_status(response_code)
 
-            if schema
-              expect(response.body).to conform_to_the_documented_model_for(swagger, schema)
+            if fragment
+              expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
             end
 
           end
