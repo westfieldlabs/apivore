@@ -5,5 +5,9 @@ class TestController < ActionController::Base
 end
 
 class ApivoresController < TestController
-  restful_controller
+
+  def swagger_doc
+    ""
+  end
+
 end
