@@ -45,10 +45,16 @@ module Apivore
         describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
 
-            data = get_apivore_setup(path, method, response_code)
-            full_path = apivore_build_path(swagger.base_path + path, data)
+            setup_data = get_apivore_setup(path, method, response_code)
+            full_path = apivore_build_path(swagger.base_path + path, setup_data)
 
-            send(method, full_path, data['_data']) # EG: get(full_path)
+            # EG: get(full_path)
+            if setup_data.is_a?(Hash) && setup_data['_data']
+              send(method, full_path, setup_data['_data'])
+            else
+              send(method, full_path)
+            end
+
             expect(response).to have_http_status(response_code)
 
             if fragment
