@@ -46,7 +46,7 @@ module Apivore
           it "responds with the specified models" do
 
             data = get_apivore_setup(path, method, response_code)
-            full_path = apivore_build_path(path + swagger.base_path, data)
+            full_path = apivore_build_path(swagger.base_path + path, data)
 
             send(method, full_path, data['_data']) # EG: get(full_path)
             expect(response).to have_http_status(response_code)

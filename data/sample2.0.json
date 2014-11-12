@@ -5,6 +5,7 @@
     "title": "Westfield Centre Directory Service"
    },
   "host": "api.test.westfieldlabs.com",
+  "basePath": "/api",
   "schemes": [
     "https"
   ],

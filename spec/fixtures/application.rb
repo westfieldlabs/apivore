@@ -23,17 +23,17 @@ module Rails
       case "#{method} #{path}"
       when "GET /swagger-doc.json"
         respond_with 200, File.read(File.expand_path("../../../data/sample2.0.json", __FILE__))
-      when "GET /services.json"
+      when "GET /api/services.json"
         respond_with 200, [{ id: 1, name: "hello world" }].to_json
-      when "POST /services.json"
+      when "POST /api/services.json"
         respond_with 204
-      when "GET /services/1.json"
+      when "GET /api/services/1.json"
         respond_with 200, { id: 1, name: "hello world" }.to_json
-      when "PUT /services/1.json"
+      when "PUT /api/services/1.json"
         respond_with 204
-      when "DELETE /services/1.json"
+      when "DELETE /api/services/1.json"
         respond_with 204
-      when "PATCH /services/1.json"
+      when "PATCH /api/services/1.json"
         respond_with 204
       end
     end
