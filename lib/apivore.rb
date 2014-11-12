@@ -18,6 +18,10 @@ module Apivore
       swagger
     end
 
+    def base_path
+      self['basePath'] || ''
+    end
+
     def each_response(&block)
       paths.each do |path, path_data|
         path_data.each do |verb, method_data|

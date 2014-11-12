@@ -1,13 +1,23 @@
 require 'spec_helper'
 include Apivore::RspecBuilder
 
-#describe "Apivores" do
-describe ApivoresController, :type => :request do
+describe "Apivore", :type => :request do
 
-  # validate("/swagger-doc.json")
-
-  it "uses the block to determine the value" do
-    get '/swagger-doc.json'
+  apivore_setup '/services/{id}.json', 'get', '200' do
+    {'id' => 1}
   end
 
+  apivore_setup '/services/{id}.json', 'put', '204' do
+    {'id' => 1}
+  end
+
+  apivore_setup '/services/{id}.json', 'delete', '204' do
+    {'id' => 1}
+  end
+
+  apivore_setup '/services/{id}.json', 'patch', '204' do
+    {'id' => 1}
+  end
+
+  validate("/swagger-doc.json")
 end

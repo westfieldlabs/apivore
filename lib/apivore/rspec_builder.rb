@@ -8,8 +8,9 @@ module Apivore
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
 
+    @@setups ||= {}
+
     def apivore_setup(path, method, response, &block)
-      @@setups ||= {}
       @@setups[path + method + response] = block
     end
 
@@ -41,15 +42,15 @@ module Apivore
       swagger = apivore_swagger(swagger_path)
       swagger.each_response do |path, method, response_code, fragment|
 
-        describe "path #{path} method #{method} response #{response_code}" do
-          it "responds with the specified models" do
+        full_path = run_apivore_setup(
+          path,
+          method,
+          response_code,
+          swagger.base_path
+        )
 
-            full_path = run_apivore_setup(
-              path,
-              method,
-              response_code,
-              swagger['basePath']
-            )
+        describe "path #{full_path} method #{method} response #{response_code}" do
+          it "responds with the specified models" do
 
             send(method, full_path) # EG: get(full_path)
             expect(response).to have_http_status(response_code)
