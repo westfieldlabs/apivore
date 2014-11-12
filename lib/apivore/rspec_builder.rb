@@ -14,14 +14,15 @@ module Apivore
       @@setups[path + method + response] = block
     end
 
-    def run_apivore_setup(path, method, response_code, base_path)
-      key = path + method + response_code
-      if @@setups[key]
-        @@setups[key].call.each do |key, data|
-          path = path.gsub "{#{key}}", data.to_s
-        end
+    def get_apivore_setup(path, method, response)
+      @@setups[path + method + response].try :call
+    end
+
+    def apivore_build_path(path, data)
+      (data || []).each do |key, data|
+        path = path.gsub "{#{key}}", data.to_s
       end
-      base_path + path
+      path
     end
 
     def apivore_swagger(swagger_path)
@@ -42,12 +43,8 @@ module Apivore
       swagger = apivore_swagger(swagger_path)
       swagger.each_response do |path, method, response_code, fragment|
 
-        full_path = run_apivore_setup(
-          path,
-          method,
-          response_code,
-          swagger.base_path
-        )
+        data = get_apivore_setup(path, method, response_code)
+        full_path = apivore_build_path(path + swagger.base_path, data)
 
         describe "path #{full_path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
