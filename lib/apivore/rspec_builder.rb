@@ -19,8 +19,13 @@ module Apivore
     end
 
     def apivore_build_path(path, data)
-      (data || []).each do |key, data|
-        path = path.gsub "{#{key}}", data.to_s
+      path.scan(/\{([^\}]*)\}/).each do |param|
+        key = param.first
+        if data && data[key]
+          path = path.gsub "{#{key}}", data[key].to_s
+        else
+          raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
+        end
       end
       path
     end
