@@ -10,13 +10,14 @@ describe 'Apivore::ApiDescription' do
   it { should respond_to(:version) }
   it { should respond_to(:validate) }
   it { should respond_to(:each_response) }
+  it { should respond_to(:base_path) }
 
   describe 'swagger version' do
     subject { swagger.version }
     it { should == '2.0' }
   end
 
-  describe 'validates against Swagger 2.0' do
+  describe 'validates Swagger 2.0' do
     subject { swagger.validate }
     it { should == [] }
   end
