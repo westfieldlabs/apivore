@@ -8,19 +8,21 @@ module Apivore
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
 
+    @@setups ||= {}
+
     def apivore_setup(path, method, response, &block)
-      @@setups ||= {}
       @@setups[path + method + response] = block
     end
 
-    def run_apivore_setup(path, method, response_code, base_path)
-      key = path + method + response_code
-      if @@setups[key]
-        @@setups[key].call.each do |key, data|
-          path = path.gsub "{#{key}}", data.to_s
-        end
+    def get_apivore_setup(path, method, response)
+      @@setups[path + method + response].try(:call) || {}
+    end
+
+    def apivore_build_path(path, data)
+      (data || []).each do |key, data|
+        path = path.gsub "{#{key}}", data.to_s
       end
-      base_path + path
+      path
     end
 
     def apivore_swagger(swagger_path)
@@ -40,18 +42,19 @@ module Apivore
 
       swagger = apivore_swagger(swagger_path)
       swagger.each_response do |path, method, response_code, fragment|
-
         describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
 
-            full_path = run_apivore_setup(
-              path,
-              method,
-              response_code,
-              swagger['basePath']
-            )
+            setup_data = get_apivore_setup(path, method, response_code)
+            full_path = apivore_build_path(swagger.base_path + path, setup_data)
 
-            send(method, full_path) # EG: get(full_path)
+            # EG: get(full_path)
+            if setup_data.is_a?(Hash) && setup_data['_data']
+              send(method, full_path, setup_data['_data'])
+            else
+              send(method, full_path)
+            end
+
             expect(response).to have_http_status(response_code)
 
             if fragment

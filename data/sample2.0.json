@@ -5,7 +5,7 @@
     "title": "Westfield Centre Directory Service"
    },
   "host": "api.test.westfieldlabs.com",
-  "basePath": "/api/centre-directory/master",
+  "basePath": "/api",
   "schemes": [
     "https"
   ],
@@ -26,7 +26,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/definitions/services"
+                  "$ref": "#/definitions/service"
                 }
               }
             }
@@ -72,126 +72,30 @@
               "description": "Service deleted"
             }
           }
+        },
+        "patch": {
+          "description": "Patches a service.",
+          "operationId": "Services#patch",
+          "responses": {
+            "204": {
+              "description": "Service pached"
+            }
+          }
         }
       }
   },
   "definitions": {
     "service": {
       "type": "object",
-      "required": [
-        "id",
-        "service_type",
-        "centre_id"
-      ],
+      "required": [ "id" ],
       "properties": {
         "id": {
           "type": "integer",
-          "description": "Service Id"
+          "description": "Service id"
         },
-        "service_type": {
-          "type": "string",
-          "description": "Service Type"
-        },
-        "centre_id": {
-          "type": "string",
-          "description": "Centre Id"
-        },
-        "image_ref": {
+        "name": {
           "type": ["string", "null"],
-          "description": "Image Ref"
-        },
-        "short_title": {
-          "type": ["string", "null"],
-          "description": "Short Name"
-        },
-        "long_title": {
-          "type": ["string", "null"],
-          "description": "Long Name"
-        },
-        "description": {
-          "type": ["string", "null"],
-          "description": "Description"
-        },
-        "active": {
-          "type": ["boolean", "null"],
-          "description": "Active"
-        },
-        "sort_order": {
-          "type": ["integer", "null"],
-          "description": "Sort Order"
-        },
-        "phone_number": {
-          "type": ["string", "null"],
-          "description": "Phone Number"
-        },
-        "email": {
-          "type": ["string", "null"],
-          "description": "Email Address"
-        },
-        "url": {
-          "type": ["string", "null"],
-          "description": "Service Url"
-        }
-      }
-    },
-    "services": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "service_type",
-          "centre_id"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Service Id"
-          },
-          "service_type": {
-            "type": "string",
-            "description": "Service Type"
-          },
-          "centre_id": {
-            "type": "string",
-            "description": "Centre Id"
-          },
-          "image_ref": {
-            "type": ["string", "null"],
-            "description": "Image Ref"
-          },
-          "shor_title": {
-            "type": ["string", "null"],
-            "description": "Short Name"
-          },
-          "long_title": {
-            "type": ["string", "null"],
-            "description": "Long Name"
-          },
-          "description": {
-            "type": ["string", "null"],
-            "description": "Description"
-          },
-          "active": {
-            "type": ["boolean","null"],
-            "description": "Active"
-          },
-          "sort_order": {
-            "type": ["integer","null"],
-            "description": "Sort Order"
-          },
-          "phone_number": {
-            "type": ["string", "null"],
-            "description": "Phone Number"
-          },
-          "email": {
-            "type": ["string", "null"],
-            "description": "Email Address"
-          },
-          "url": {
-            "type": ["string", "null"],
-            "description": "Service Url"
-          }
+          "description": "Service name"
         }
       }
     }

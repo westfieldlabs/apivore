@@ -28,7 +28,8 @@ describe 'Apivore::ApiDescription' do
         ["/services.json", "post", "204", nil],
         ["/services/{id}.json", "get", "200", ['#', 'paths', '/services/{id}.json', 'get', 'responses', '200', 'schema']],
         ["/services/{id}.json", "put", "204", nil],
-        ["/services/{id}.json", "delete", "204", nil]
+        ["/services/{id}.json", "delete", "204", nil],
+        ["/services/{id}.json", "patch", "204", nil]
       )
     end
   end
