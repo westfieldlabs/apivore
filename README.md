@@ -21,10 +21,10 @@ require 'apivore'
 include Apivore::RspecBuilder
 
 describe "the API" do
-  validate("api/swagger.json")
+  validate("/swagger.json")
 end
 ```
-using the path to your application's Swagger 2.0 documentation in place of `api/swagger.json`
+using the path to your application's Swagger 2.0 documentation. The convention is `/swagger.json`.
 
 This will validate the json against the Swagger 2.0 schema and the generate tests for each documented endpoint combination of a path, method, and expected response.
 
