@@ -74,4 +74,4 @@ The modifications involve explicitly including in the previously external refere
 ## Contributors
 
 * Charles Horn (https://github.com/hornc)
-* Leon Dewey ()
+* Leon Dewey (https://github.com/leondewey)
