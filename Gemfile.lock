@@ -4,6 +4,7 @@ PATH
     apivore (0.0.1)
       hashie
       json-schema
+      rspec-expectations
 
 GEM
   remote: https://rubygems.org/

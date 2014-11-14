@@ -1,4 +1,5 @@
 require 'json-schema'
+require 'rspec/expectations'
 
 module Apivore
   module RspecMatchers
