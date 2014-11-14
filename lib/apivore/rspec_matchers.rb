@@ -7,7 +7,7 @@ module Apivore
     matcher :be_valid_swagger do |version|
       match do |body|
         @api_description = Swagger.new(JSON.parse(body))
-        @api_description.validate == []
+        @api_description.validate.empty?
       end
 
       failure_message do |body|
