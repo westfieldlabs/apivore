@@ -12,11 +12,11 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/hornc/apivore'
   s.add_runtime_dependency 'json-schema', '~> 2.4.1'
   s.add_runtime_dependency 'rspec-expectations', '~> 3.1'
+  s.add_runtime_dependency 'actionpack', '~> 4.1.6'
   s.add_runtime_dependency 'hashie', '~> 3.3.1'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'actionpack'
   s.add_development_dependency 'activesupport'
 end
