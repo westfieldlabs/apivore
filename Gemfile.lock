@@ -2,9 +2,9 @@ PATH
   remote: .
   specs:
     apivore (0.0.1)
-      hashie
-      json-schema
-      rspec-expectations
+      hashie (~> 3.3.1)
+      json-schema (~> 2.4.1)
+      rspec-expectations (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
