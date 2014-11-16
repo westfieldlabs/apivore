@@ -1,7 +1,7 @@
 require 'spec_helper'
 include Apivore::RspecBuilder
 
-describe "Apivore", :type => :request do
+describe "Example API", :type => :request do
 
   apivore_setup '/services/{id}.json', 'get', '200' do
     {'id' => 1}
