@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Apivore::ApiDescription' do
 
-  let(:doc) { IO.read(File.join(File.dirname(__FILE__), "../data", "sample2.0.json")) }
+  let(:doc) { IO.read(File.join(File.dirname(__FILE__), "data", "sample2.0.json")) }
   let(:swagger) { Apivore::Swagger.new(JSON.parse(doc)) }
 
   subject { swagger }

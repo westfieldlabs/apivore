@@ -22,7 +22,7 @@ module Rails
       method = env['REQUEST_METHOD']
       case "#{method} #{path}"
       when "GET /swagger-doc.json"
-        respond_with 200, File.read(File.expand_path("../../../data/sample2.0.json", __FILE__))
+        respond_with 200, File.read(File.expand_path("../../data/sample2.0.json", __FILE__))
       when "GET /api/services.json"
         respond_with 200, [{ id: 1, name: "hello world" }].to_json
       when "POST /api/services.json"
