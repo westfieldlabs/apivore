@@ -65,9 +65,19 @@ The generated tests will output details on where the Swagger documentation fails
 
 Copyright 2014 Westfield Labs Corporation
 
-Licensed under the [Apache v2.0](http://www.apache.org/licenses/LICENSE-2.0.html) license.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This project includes and makes use of a modified version of the [Swagger 2.0 schema json](https://github.com/swagger-api/swagger-spec/blob/master/schemas/v2.0/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the MIT license) included here as `data/swagger_2.0_schema.json`
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes and makes use of a modified version of the [Swagger 2.0 schema json](https://github.com/swagger-api/swagger-spec/blob/master/schemas/v2.0/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the [MIT license](http://opensource.org/licenses/MIT)) included here as `data/swagger_2.0_schema.json`
 
 The modifications involve explicitly including in the previously external references to http://json-schema.org/draft-04/schema to prevent network resource fetching and speed up validation times considerably.
 
