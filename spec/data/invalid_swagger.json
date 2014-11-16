@@ -1,0 +1,15 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.0",
+    "title": "Invalid Swagger"
+   },
+  "host": "invalid.example.com",
+  "basePath": "/nothing",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"],
+  "extra-field": "should not validate!"
+}
