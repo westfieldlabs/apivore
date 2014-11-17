@@ -77,22 +77,6 @@
     }
   },
   "definitions": {
-    "positiveInteger": {
-            "type": "integer",
-            "minimum": 0
-    },
-     "positiveIntegerDefault0": {
-            "allOf": [ { "$ref": "#/definitions/positiveInteger" }, { "default": 0 } ]
-    },
-    "stringArray": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "uniqueItems": true
-    },
-    "simpleTypes": {
-            "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
-    },
     "info": {
       "type": "object",
       "description": "General information about the API.",
@@ -908,50 +892,46 @@
           "type": "string"
         },
         "title": {
-          "type": "string" 
+          "$ref": "#/definitions/title"
         },
         "description": {
-          "type": "string" 
+          "$ref": "#/definitions/description"
         },
-        "default": { },
+        "default": {
+          "$ref": "#/definitions/default"
+        },
         "multipleOf": {
-           "type": "number",
-           "minimum": 0,
-           "exclusiveMinimum": true 
+          "$ref": "#/definitions/multipleOf"
         },
         "maximum": {
-          "type": "number"
+          "$ref": "#/definitions/maximum"
         },
         "exclusiveMaximum": {
-          "type": "boolean",
-          "default": false 
+          "$ref": "#/definitions/exclusiveMaximum"
         },
         "minimum": {
-          "type": "number" 
+          "$ref": "#/definitions/minimum"
         },
         "exclusiveMinimum": {
-          "type": "boolean",
-           "default": false 
+          "$ref": "#/definitions/exclusiveMinimum"
         },
         "maxLength": {
-          "$ref": "#/definitions/positiveInteger"
+          "$ref": "#/definitions/maxLength"
         },
         "minLength": {
-          "$ref": "#/definitions/positiveIntegerDefault0"
+          "$ref": "#/definitions/minLength"
         },
         "pattern": {
-           "type": "string",
-           "format": "regex" 
+          "$ref": "#/definitions/pattern"
         },
         "maxItems": {
-          "$ref": "#/definitions/positiveInteger"
+          "$ref": "#/definitions/maxItems"
         },
         "minItems": {
-          "$ref": "#/definitions/positiveIntegerDefault0"
+          "$ref": "#/definitions/minItems"
         },
         "uniqueItems": {
-           "type": "boolean",
-           "default": false 
+          "$ref": "#/definitions/uniqueItems"
         },
         "maxProperties": {
           "$ref": "#/definitions/positiveInteger"
@@ -963,9 +943,7 @@
           "$ref": "#/definitions/stringArray"
         },
         "enum": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true 
+          "$ref": "#/definitions/enum"
         },
         "type": {
           "anyOf": [
@@ -1514,6 +1492,15 @@
           "type": "string"
         }
       }
+    },
+    "simpleTypes": {
+      "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true
     }
   }
 }
