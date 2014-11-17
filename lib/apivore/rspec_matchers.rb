@@ -42,7 +42,7 @@ module Apivore
       end
 
       failure_message do |body|
-        @errors.join("\n")
+        @errors.map { |e| e.gsub(/^The property|in schema.*$/,'') }.join("\n")
       end
     end
   end
