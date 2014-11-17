@@ -10,7 +10,7 @@ Currently this gem is not yet on rubygems.org
 
 Install from github using the following in your Gemfile:
 
-    gem 'apivore', :github => 'hornc/apivore', :branch => 'master'
+    gem 'apivore', :github => 'westfieldlabs/apivore', :branch => 'master'
 
 ## Usage
 
