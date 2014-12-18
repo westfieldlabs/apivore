@@ -60,7 +60,7 @@ module Apivore
               send(method, full_path)
             end
 
-            expect(response).to have_http_status(response_code)
+            expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
 
             if fragment
               expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
