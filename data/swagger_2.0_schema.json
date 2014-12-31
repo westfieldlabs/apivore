@@ -1501,6 +1501,13 @@
       "items": { "type": "string" },
       "minItems": 1,
       "uniqueItems": true
+    },
+    "positiveInteger": {
+      "type": "integer"
+    },
+    "positiveIntegerDefault0": {
+      "type": "integer",
+      "default": 0
     }
   }
 }
