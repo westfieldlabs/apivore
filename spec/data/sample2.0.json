@@ -78,7 +78,7 @@
           "operationId": "Services#patch",
           "responses": {
             "204": {
-              "description": "Service pached"
+              "description": "Service patched"
             }
           }
         }
