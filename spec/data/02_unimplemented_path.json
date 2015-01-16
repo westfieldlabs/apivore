@@ -1,0 +1,120 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "master",
+    "title": "Westfield Centre Directory Service"
+   },
+  "host": "api.test.westfieldlabs.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+      "/not_implemented.json": {
+        "get": {
+          "description": "To test a documented path which is not implemented",
+          "operationId": "not_implemented#index",
+          "responses": {
+            "200": {
+              "description": "not implemented index response",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/service"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/services.json": {
+        "get": {
+          "description": "Services available to shoppers in Westfield Centres",
+          "operationId": "Services#index",
+          "responses": {
+            "200": {
+              "description": "service index response",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/service"
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "description": "Creates a service.",
+          "operationId": "Services#post",
+          "responses": {
+            "204": {
+              "description": "Service created"
+            }
+          }
+        }
+      },
+      "/services/{id}.json": {
+        "get": {
+          "description": "Returns a service.",
+          "operationId": "Services#show",
+          "responses": {
+            "200": {
+              "description": "show service response",
+              "schema": {
+                "$ref": "#/definitions/service"
+              }
+            }
+          }
+        },
+        "put": {
+          "description": "Update a service.",
+          "operationId": "Services#put",
+          "responses": {
+            "204": {
+              "description": "Service updated"
+            }
+          }
+        },
+        "delete": {
+          "description": "Deletes a service.",
+          "operationId": "Services#delete",
+          "responses": {
+            "204": {
+              "description": "Service deleted"
+            }
+          }
+        },
+        "patch": {
+          "description": "Patches a service.",
+          "operationId": "Services#patch",
+          "responses": {
+            "204": {
+              "description": "Service patched"
+            }
+          }
+        }
+      }
+  },
+  "definitions": {
+    "service": {
+      "type": "object",
+      "required": [ "id" ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service id"
+        },
+        "name": {
+          "type": ["string", "null"],
+          "description": "Service name"
+        }
+      }
+    }
+  }
+}
