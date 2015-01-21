@@ -23,5 +23,9 @@ describe "Example API", :type => :request do
     {'id' => 1}
   end
 
+  apivore_setup '/services.json', 'get', '200' do
+    expect(Rails.application).to receive(:call).and_call_original
+  end
+
   validate("/swagger-doc.json")
 end

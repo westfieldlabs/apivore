@@ -7,7 +7,8 @@ module Apivore
   module RspecBuilder
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
-
+    include RSpec::Mocks::ExampleMethods
+    
     @@setups ||= {}
 
     def apivore_setup(path, method, response, &block)
