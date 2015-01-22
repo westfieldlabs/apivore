@@ -6,6 +6,7 @@ PATH
       hashie (~> 3.3.1)
       json-schema (~> 2.4.1)
       rspec-expectations (~> 3.1)
+      rspec-mocks (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
