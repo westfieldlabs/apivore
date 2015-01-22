@@ -4,7 +4,7 @@
     "version": "testing",
     "title": "Example Centre Directory Service"
    },
-  "host": "api.test.westfieldlabs.com",
+  "host": "api.test.example.com",
   "basePath": "/api",
   "schemes": [
     "https"

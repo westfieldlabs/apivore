@@ -16,23 +16,23 @@
     "application/json"
   ],
   "paths": {
-      "/services.json": {
-        "get": {
-          "description": "Services available to shoppers.",
-          "operationId": "Services#index",
-          "responses": {
-            "222": {
-              "description": "service index response",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/service"
-                }
+    "/services.json": {
+      "get": {
+        "description": "Services available to shoppers.",
+        "operationId": "Services#index",
+        "responses": {
+          "222": {
+            "description": "service index response with an unusual and not-implemented http response code",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/service"
               }
             }
           }
         }
       }
+    }
   },
   "definitions": {
     "service": {
