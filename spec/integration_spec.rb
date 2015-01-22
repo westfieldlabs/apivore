@@ -15,11 +15,19 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a path exists but the API response does not match" do
+  describe "a path exists but the API response contains a property of a different type" do
     it 'should show which path and field has the problem' do
-      stdout = `rspec spec/data/example_specs.rb --example 'mismatched response format'`
+      stdout = `rspec spec/data/example_specs.rb --example 'mismatched property type'`
       expect(stdout).to match(/2 failures/)
       expect(stdout).to match("'#/name' of type String did not match one or more of the following types: integer, null")
+    end
+  end
+
+  describe "a path exists but the API responds with a unexpected http response code" do
+    it 'should show which path has the problem and what the expected and actual response code are' do
+      stdout = `rspec spec/data/example_specs.rb --example 'unexpected http response'`
+      expect(stdout).to match(/1 failure/)
+      expect(stdout).to match(/expected 222 .*, got 200/)
     end
   end
 

@@ -32,7 +32,11 @@ context "API testing scenarios" do
     validate("/02_unimplemented_path.json")
   end
 
-  describe "mismatched response format", :type => :request do
-    validate("/03_mismatched_response.json")
+  describe "mismatched property type", :type => :request do
+    validate("/03_mismatched_type_response.json")
+  end
+
+  describe "unexpected http response", :type => :request do
+    validate("/04_unexpected_http_response.json")
   end
 end

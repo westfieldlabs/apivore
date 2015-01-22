@@ -25,8 +25,10 @@ module Rails
         respond_with 200, File.read(File.expand_path("../../data/sample2.0.json", __FILE__))
       when "GET /02_unimplemented_path.json"
         respond_with 200, File.read(File.expand_path("../../data/02_unimplemented_path.json", __FILE__))
-      when "GET /03_mismatched_response.json"
-        respond_with 200, File.read(File.expand_path("../../data/03_mismatched_response.json", __FILE__))
+      when "GET /03_mismatched_type_response.json"
+        respond_with 200, File.read(File.expand_path("../../data/03_mismatched_type_response.json", __FILE__))
+      when "GET /04_unexpected_http_response.json"
+        respond_with 200, File.read(File.expand_path("../../data/04_unexpected_http_response.json", __FILE__))
       when "GET /api/services.json"
         respond_with 200, [{ id: 1, name: "hello world" }].to_json
       when "POST /api/services.json"
