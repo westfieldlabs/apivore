@@ -1,0 +1,53 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "testing",
+    "title": "Example Centre Directory Service"
+   },
+  "host": "api.test.example.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+      "/services.json": {
+        "get": {
+          "description": "Services available to shoppers.",
+          "operationId": "Services#index",
+          "responses": {
+            "222": {
+              "description": "service index response",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/service"
+                }
+              }
+            }
+          }
+        }
+      }
+  },
+  "definitions": {
+    "service": {
+      "type": "object",
+      "required": [ "id" ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service id"
+        },
+        "name": {
+          "type": ["string", "null"],
+          "description": "Service name"
+        }
+      }
+    }
+  }
+}
