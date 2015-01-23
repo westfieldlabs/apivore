@@ -39,4 +39,8 @@ context "API testing scenarios" do
   describe "unexpected http response", :type => :request do
     validate("/04_unexpected_http_response.json")
   end
+
+  describe "extra properties", :type => :request do
+    validate("/05_extra_properties.json")
+  end
 end

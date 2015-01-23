@@ -36,7 +36,9 @@ module Apivore
       begin
         session.get swagger_path
       rescue
-        raise "Unable to perform GET request for swagger json: #{swagger_path}."
+        # TODO: make this fail inside rspec test execution rather than immediately raise an exception.
+        # ALSO, handle other scenarios where we can't get a response to generate tests, e.g 500s, invalid formats etc
+        raise "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
       end
       Apivore::Swagger.new JSON.parse(session.response.body)
     end
