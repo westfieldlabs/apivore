@@ -33,7 +33,11 @@ module Apivore
 
     def apivore_swagger(swagger_path)
       session = ActionDispatch::Integration::Session.new(Rails.application)
-      session.get swagger_path
+      begin
+        session.get swagger_path
+      rescue
+        raise "Unable to perform GET request for swagger json: #{swagger_path}."
+      end
       Apivore::Swagger.new JSON.parse(session.response.body)
     end
 
