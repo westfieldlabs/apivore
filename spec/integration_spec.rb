@@ -33,7 +33,7 @@ context "Apivore tests running against a mock API" do
 
   describe "a response contains extra (undocumented) properties (Default Non-strict validation)" do
     it 'should not throw any errors' do
-      # This swagger doc does not document one one of the properties the mock API returns
+      # This swagger doc does not document one of the properties returned by the mock API
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
       expect(stdout).to match(/0 failures/)
     end
@@ -41,7 +41,7 @@ context "Apivore tests running against a mock API" do
 
   describe "a response contains extra (undocumented) properties (configured with strict validation)" do
     it 'should error on undocumented fields' do
-      # This swagger doc does not document one one of the properties the mock API returns
+      # This swagger doc does not document one of the properties returned by the mock API
       # TODO: set configuration to validate :strict => true so the strictness behaviour is configurable
       pending("needs configurable option to allow :strict => true validation")
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`

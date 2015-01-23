@@ -22,7 +22,7 @@
         "operationId": "Services#index",
         "responses": {
           "222": {
-            "description": "service index response with an unusual and not-implemented http response code",
+            "description": "service index response with an unusual and unimplemented http response code",
             "schema": {
               "type": "array",
               "items": {
