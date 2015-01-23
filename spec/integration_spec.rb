@@ -31,7 +31,7 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a response contains extra (undocumented) properties (Default Non-strict validation)" do
+  describe "a response contains extra (undocumented) properties (default non-strict validation)" do
     it 'should not throw any errors' do
       # This swagger doc does not document one of the properties returned by the mock API
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
