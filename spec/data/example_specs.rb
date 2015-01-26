@@ -49,6 +49,6 @@ context "API testing scenarios" do
   end
 
   describe "missing non-required", :type => :request do
-    validate("/06_missing_non-required_property.json")
+    validate("/07_missing_non-required_property.json")
   end
 end

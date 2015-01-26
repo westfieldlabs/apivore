@@ -33,8 +33,8 @@ module Rails
         respond_with 200, File.read(File.expand_path("../../data/05_extra_properties.json", __FILE__))
       when "GET /06_missing_required_property.json"
         respond_with 200, File.read(File.expand_path("../../data/06_missing_required_property.json", __FILE__))
-      when "GET /06_missing_non-required_property.json"
-        respond_with 200, File.read(File.expand_path("../../data/06_missing_non-required_property.json", __FILE__))
+      when "GET /07_missing_non-required_property.json"
+        respond_with 200, File.read(File.expand_path("../../data/07_missing_non-required_property.json", __FILE__))
       when "GET /api/services.json"
         respond_with 200, [{ id: 1, name: "hello world" }].to_json
       when "POST /api/services.json"
