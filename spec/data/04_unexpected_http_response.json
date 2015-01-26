@@ -25,27 +25,9 @@
             "description": "service index response with an unusual and unimplemented http response code",
             "schema": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/service"
-              }
+              "items": { }
             }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "service": {
-      "type": "object",
-      "required": [ "id" ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "description": "Service id"
-        },
-        "name": {
-          "type": ["string", "null"],
-          "description": "Service name"
         }
       }
     }

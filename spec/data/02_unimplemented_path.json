@@ -25,27 +25,9 @@
             "description": "not implemented index response",
             "schema": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/service"
-              }
+              "items": { }
             }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "service": {
-      "type": "object",
-      "required": [ "id" ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "description": "Service id"
-        },
-        "name": {
-          "type": ["string", "null"],
-          "description": "Service name"
         }
       }
     }
