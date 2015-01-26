@@ -43,4 +43,12 @@ context "API testing scenarios" do
   describe "extra properties", :type => :request do
     validate("/05_extra_properties.json")
   end
+
+  describe "missing required", :type => :request do
+    validate("/06_missing_required_property.json")
+  end
+
+  describe "missing non-required", :type => :request do
+    validate("/06_missing_non-required_property.json")
+  end
 end
