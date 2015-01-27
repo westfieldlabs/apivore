@@ -20,4 +20,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'activesupport'
+
+  if RUBY_VERSION >= '2.2.0'
+    s.add_development_dependency 'test-unit'
+  end
 end
