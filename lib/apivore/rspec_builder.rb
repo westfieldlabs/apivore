@@ -16,7 +16,8 @@ module Apivore
     end
 
     def get_apivore_setup(path, method, response)
-      @@setups[path + method + response].try(:call) || {}
+      setup = @@setups[path + method + response]
+      (instance_eval &setup if setup) || {}
     end
 
     def apivore_build_path(path, data)
@@ -55,8 +56,8 @@ module Apivore
             full_path = apivore_build_path(swagger.base_path + path, setup_data)
 
             # e.g., get(full_path)
-            if setup_data.is_a?(Hash) && setup_data['_data']
-              send(method, full_path, setup_data['_data'])
+            if setup_data.is_a?(Hash)
+              send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
             else
               send(method, full_path)
             end
