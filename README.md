@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/westfieldlabs/apivore.svg?branch=master)](https://travis-ci.org/westfieldlabs/apivore)
+
 [![Code Climate](https://codeclimate.com/github/westfieldlabs/apivore/badges/gpa.svg)](https://codeclimate.com/github/westfieldlabs/apivore)
 # Apivore
 
