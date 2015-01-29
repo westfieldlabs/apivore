@@ -1,0 +1,35 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "testing",
+    "title": "Example Centre Directory Service"
+   },
+  "host": "api.test.example.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/services.json": {
+      "get": {
+        "description": "Services available to shoppers.",
+        "operationId": "Services#index",
+        "responses": {
+          "222": {
+            "description": "service index response with an unusual and unimplemented http response code",
+            "schema": {
+              "type": "array",
+              "items": { }
+            }
+          }
+        }
+      }
+    }
+  }
+}

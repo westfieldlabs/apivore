@@ -1,0 +1,67 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "testing",
+    "title": "Example Centre Directory Service"
+   },
+  "host": "api.test.example.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/services.json": {
+      "get": {
+        "description": "Services available to shoppers.",
+        "operationId": "Services#index",
+        "responses": {
+          "200": {
+            "description": "service index response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/service"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services/{id}.json": {
+      "get": {
+        "description": "Returns a service.",
+        "operationId": "Services#show",
+        "responses": {
+          "200": {
+            "description": "show service response",
+            "schema": {
+              "$ref": "#/definitions/service"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "service": {
+      "type": "object",
+      "required": [ "id" ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Service id"
+        },
+        "name": {
+          "type": ["integer", "null"],
+          "description": "Service name, incorrectly Typed as an Integer"
+        }
+      }
+    }
+  }
+}

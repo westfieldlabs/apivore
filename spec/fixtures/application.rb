@@ -20,6 +20,14 @@ module Rails
     def call(env)
       path = env['PATH_INFO']
       method = env['REQUEST_METHOD']
+      test_swagger_files = [
+        "/02_unimplemented_path.json",
+        "/03_mismatched_type_response.json",
+        "/04_unexpected_http_response.json",
+        "/05_extra_properties.json",
+        "/06_missing_required_property.json",
+        "/07_missing_non-required_property.json",
+      ]
       case "#{method} #{path}"
       when "GET /swagger-doc.json"
         respond_with 200, File.read(File.expand_path("../../data/sample2.0.json", __FILE__))
@@ -35,6 +43,10 @@ module Rails
         respond_with 204
       when "PATCH /api/services/1.json"
         respond_with 204
+      else
+        if test_swagger_files.include?(path)
+          respond_with 200, File.read(File.expand_path("../../data#{path}", __FILE__))
+        end
       end
     end
 
