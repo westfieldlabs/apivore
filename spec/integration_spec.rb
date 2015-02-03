@@ -31,19 +31,19 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a response contains extra (undocumented) properties (default non-strict validation)" do
+  describe "a response containing extra (undocumented) properties (configured with non-strict validation)" do
     it 'should pass validation' do
+      pending "needs configurable option to allow :strict => false validation"
+      # TODO: set configuration to validate :strict => true so the strictness behaviour is configurable
       # This swagger doc does not document one of the properties returned by the mock API
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
       expect(stdout).to match(/0 failures/)
     end
   end
 
-  describe "a response contains extra (undocumented) properties (configured with strict validation)" do
+  describe "a response containing extra (undocumented) properties (default strict validation)" do
     it 'should fail on undocumented properties for both index and view' do
       # This swagger doc does not document one of the properties returned by the mock API
-      # TODO: set configuration to validate :strict => true so the strictness behaviour is configurable
-      pending("needs configurable option to allow :strict => true validation")
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
       expect(stdout).to match(/2 failures/)
       expect(stdout).to match("'#/0' contained undefined properties: 'name'") # Index
@@ -51,7 +51,7 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a response is missing a required property" do
+  describe "a response missing a required property" do
     it 'should fail on the missing property for both index and view' do
       stdout = `rspec spec/data/example_specs.rb --example 'missing required'`
       expect(stdout).to match(/2 failures/)
@@ -62,6 +62,7 @@ context "Apivore tests running against a mock API" do
 
   describe "a reponse is missing a non-required property" do
     it 'should pass validation' do
+      pending "needs a way to support non-required properties while still providing the functionality of json-schema's :strict validation (which catches undocumented properties)"
       stdout = `rspec spec/data/example_specs.rb --example 'missing non-required'`
       expect(stdout).to match(/0 failures/)
     end
