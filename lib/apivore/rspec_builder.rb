@@ -1,6 +1,7 @@
 require 'apivore/rspec_matchers'
 require 'action_controller'
 require 'action_dispatch'
+require 'rspec/mocks'
 require 'hashie'
 
 module Apivore
@@ -8,7 +9,7 @@ module Apivore
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
     include RSpec::Mocks::ExampleMethods
-    
+
     @@setups ||= {}
 
     def apivore_setup(path, method, response, &block)
