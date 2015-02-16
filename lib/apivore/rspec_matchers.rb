@@ -34,6 +34,30 @@ module Apivore
       end
     end
 
+    matcher :be_consistent_with_master_swagger_docs do |master_swagger_uri|
+      match do |body|
+        @errors = []
+        req = Faraday.new(master_swagger_uri).get("swagger.json")
+        master_swagger = JSON.parse(req.body)
+        our_swagger = JSON.parse(body)
+        master_paths = master_swagger["paths"]
+        our_paths = our_swagger["paths"]
+        master_paths_segment = master_paths.slice(*our_paths.keys)
+        expect(master_paths_segment).to eq(our_paths)
+        master_definitions = master_swagger["definitions"]
+        our_definitions = our_swagger["definitions"]
+        master_definitions_segment = master_definitions.slice(*our_definitions.keys)
+        # should fail here
+        # TODO, better error messages!
+        expect(master_definitions_segment).to eq(our_definitions)
+        @errors.empty?
+      end
+
+      failure_message do
+        @errors.join("\n")
+      end
+    end
+
     matcher :conform_to_the_documented_model_for do |swagger, fragment|
       match do |body|
         body = JSON.parse(body)
