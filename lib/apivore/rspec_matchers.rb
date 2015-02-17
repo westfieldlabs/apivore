@@ -45,9 +45,8 @@ module Apivore
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"]
         our_definitions = our_swagger["definitions"]
-        master_definitions_segment = master_definitions.slice(*our_definitions.keys)
-        @actual = master_definitions_segment
-        @expected = our_definitions
+        @expected = master_definitions.slice(*our_definitions.keys)
+        @actual = our_definitions.slice(*master_definitions.keys)
         @actual == @expected
       end
 
