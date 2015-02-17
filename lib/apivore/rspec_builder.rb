@@ -35,7 +35,7 @@ module Apivore
       path
     end
 
-    def be_consistent_with_swagger_at(uri)
+    def apivore_check_consistency_with_swagger_at(uri)
       @@master_swagger_uri = uri
     end
 
@@ -59,7 +59,10 @@ module Apivore
         it { should be_valid_swagger }
         it { should have_models_for_all_get_endpoints }
         if @@master_swagger_uri
-          it { should be_consistent_with_swagger @@master_swagger_uri }
+          req = Net::HTTP.get(master_swagger_uri, "/swagger.json")
+          master_swagger = JSON.parse(req)
+          it { should be_consistent_with_swagger_definitions master_swagger }
+          it { should be_consistent_with_swagger_paths master_swagger }
         end
       end
 

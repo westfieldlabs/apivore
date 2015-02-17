@@ -35,7 +35,7 @@ module Apivore
       end
     end
 
-    matcher :be_consistent_with_swagger do |master_swagger_uri|
+    matcher :be_consistent_with_swagger_definitions do |master_swagger|
 
       attr_reader :actual, :expected
 
@@ -45,8 +45,26 @@ module Apivore
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"]
         our_definitions = our_swagger["definitions"]
-        @expected = master_definitions.slice(*our_definitions.keys)
-        @actual = our_definitions.slice(*master_definitions.keys)
+        master_definitions_segment = master_definitions.slice(*our_definitions.keys)
+        @actual = master_definitions_segment
+        @expected = our_definitions
+        @actual == @expected
+      end
+
+      diffable
+    end
+
+    matcher :be_consistent_with_swagger_paths do |master_swagger|
+
+      attr_reader :actual, :expected
+
+      match do |body|
+        our_swagger = JSON.parse(body)
+        master_paths = master_swagger["paths"]
+        our_paths = our_swagger["paths"]
+        master_paths_segment = master_paths.slice(*our_paths.keys)
+        @actual = master_paths_segment
+        @expected = our_paths
         @actual == @expected
       end
 
