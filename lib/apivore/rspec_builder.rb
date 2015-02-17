@@ -35,7 +35,7 @@ module Apivore
       path
     end
 
-    def apivore_check_swagger_is_consistent_with(uri)
+    def be_consistent_with_swagger_at(uri)
       @@master_swagger_uri = uri
     end
 
@@ -59,7 +59,7 @@ module Apivore
         it { should be_valid_swagger }
         it { should have_models_for_all_get_endpoints }
         if @@master_swagger_uri
-          it { should be_consistent_with_master_swagger_docs @@master_swagger_uri }
+          it { should be_consistent_with_swagger @@master_swagger_uri }
         end
       end
 
