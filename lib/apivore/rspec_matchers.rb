@@ -1,5 +1,6 @@
 require 'json-schema'
 require 'rspec/expectations'
+require 'net/http'
 
 module Apivore
   module RspecMatchers
@@ -39,7 +40,7 @@ module Apivore
       attr_reader :actual, :expected
 
       match do |body|
-        req = Faraday.new(master_swagger_uri).get("swagger.json")
+        req = Net::HTTP.get(master_swagger_uri, "swagger.json")
         master_swagger = JSON.parse(req.body)
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"]
