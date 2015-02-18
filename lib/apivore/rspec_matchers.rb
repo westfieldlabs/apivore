@@ -40,8 +40,6 @@ module Apivore
       attr_reader :actual, :expected
 
       match do |body|
-        req = Net::HTTP.get(master_swagger_uri, "/swagger.json")
-        master_swagger = JSON.parse(req)
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"]
         our_definitions = our_swagger["definitions"]
