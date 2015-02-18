@@ -43,9 +43,8 @@ module Apivore
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"]
         our_definitions = our_swagger["definitions"]
-        master_definitions_segment = master_definitions.slice(*our_definitions.keys)
-        @actual = master_definitions_segment
-        @expected = our_definitions
+        @actual = our_definitions.slice(*master_definitions.keys)
+        @expected = master_definitions.slice(*our_definitions.keys)
         @actual == @expected
       end
 
@@ -60,9 +59,8 @@ module Apivore
         our_swagger = JSON.parse(body)
         master_paths = master_swagger["paths"]
         our_paths = our_swagger["paths"]
-        master_paths_segment = master_paths.slice(*our_paths.keys)
-        @actual = master_paths_segment
-        @expected = our_paths
+        @actual = our_paths.slice(*master_paths.keys)
+        @expected = master_paths.slice(*our_paths.keys)
         @actual == @expected
       end
 
