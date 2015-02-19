@@ -1,5 +1,6 @@
 require 'json-schema'
 require 'rspec/expectations'
+require 'net/http'
 
 module Apivore
   module RspecMatchers
@@ -32,6 +33,38 @@ module Apivore
       failure_message do
         @errors.join("\n")
       end
+    end
+
+    matcher :be_consistent_with_swagger_definitions do |master_swagger|
+
+      attr_reader :actual, :expected
+
+      match do |body|
+        our_swagger = JSON.parse(body)
+        master_definitions = master_swagger["definitions"]
+        our_definitions = our_swagger["definitions"]
+        @actual = our_definitions.slice(*master_definitions.keys)
+        @expected = master_definitions.slice(*our_definitions.keys)
+        @actual == @expected
+      end
+
+      diffable
+    end
+
+    matcher :be_consistent_with_swagger_paths do |master_swagger|
+
+      attr_reader :actual, :expected
+
+      match do |body|
+        our_swagger = JSON.parse(body)
+        master_paths = master_swagger["paths"]
+        our_paths = our_swagger["paths"]
+        @actual = our_paths.slice(*master_paths.keys)
+        @expected = master_paths.slice(*our_paths.keys)
+        @actual == @expected
+      end
+
+      diffable
     end
 
     matcher :conform_to_the_documented_model_for do |swagger, fragment|

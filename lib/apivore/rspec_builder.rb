@@ -12,6 +12,8 @@ module Apivore
 
     @@setups ||= {}
 
+    @@master_swagger_uri = nil
+
     def apivore_setup(path, method, response, &block)
       @@setups[path + method + response] = block
     end
@@ -33,6 +35,10 @@ module Apivore
       path
     end
 
+    def apivore_check_consistency_with_swagger_at(uri)
+      @@master_swagger_uri = uri
+    end
+
     def apivore_swagger(swagger_path)
       session = ActionDispatch::Integration::Session.new(Rails.application)
       begin
@@ -52,6 +58,14 @@ module Apivore
         subject { body }
         it { should be_valid_swagger }
         it { should have_models_for_all_get_endpoints }
+        if @@master_swagger_uri
+          req = Net::HTTP.get(@@master_swagger_uri, "/swagger.json")
+          master_swagger = JSON.parse(req)
+          it { should be_consistent_with_swagger_definitions master_swagger }
+          # This causes problems for migrations fixing the above test
+          # Once those migrations are complete, this should be enabled
+          xit { should be_consistent_with_swagger_paths master_swagger }
+        end
       end
 
       swagger = apivore_swagger(swagger_path)
