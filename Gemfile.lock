@@ -3,7 +3,7 @@ PATH
   specs:
     apivore (0.0.1)
       actionpack (~> 4)
-      hashie (~> 3.3.1)
+      hashie (>= 3.3.1)
       json-schema (~> 2.4.1)
       rspec-expectations (~> 3.1)
       rspec-mocks (~> 3.1)
@@ -27,12 +27,13 @@ GEM
     coderay (1.1.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
-    hashie (3.3.2)
+    hashie (3.4.0)
     i18n (0.6.11)
     json-schema (2.4.1)
     method_source (0.8.2)
     minitest (4.7.5)
     multi_json (1.10.1)
+    power_assert (0.2.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -67,6 +68,8 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
     slop (3.6.0)
+    test-unit (3.0.9)
+      power_assert
     thor (0.19.1)
     thread_safe (0.3.4)
     tzinfo (0.3.42)
@@ -81,3 +84,4 @@ DEPENDENCIES
   rake
   rspec
   rspec-rails
+  test-unit
