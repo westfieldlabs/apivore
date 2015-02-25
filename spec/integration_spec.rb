@@ -60,9 +60,9 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a reponse is missing a non-required property" do
+  describe "a reponse is missing an optional property" do
     it 'should pass validation' do
-      pending "needs a way to support non-required properties while still providing the functionality of json-schema's :strict validation (which catches undocumented properties)"
+      #pending "needs a way to support optional properties while still providing the functionality of json-schema's :strict validation (which catches undocumented properties)"
       stdout = `rspec spec/data/example_specs.rb --example 'missing non-required'`
       expect(stdout).to match(/0 failures/)
     end
