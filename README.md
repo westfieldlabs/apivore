@@ -14,7 +14,7 @@ Currently this gem is not yet on rubygems.org
 Install from github using the following in your Gemfile:
 
     gem 'apivore', :github => 'westfieldlabs/apivore', :branch => 'master'
-  
+
 ***WARNING:*** If apivore is listed in the Gemfile _above_ rspec then some issues, specifically `NameError: uninitialized constant RSpec::Mocks`, may arraise when trying to run specs.
 
 ## Usage
@@ -48,6 +48,15 @@ describe "the API" do
   validate("api/swagger.json")
 end
 ```
+A query string can be specified with the `_query_string` key as follows:
+
+```ruby
+apivore_setup '/books.json', 'get', '200' do
+  {"_query_string" => "title=Hello%20World&edition=3"}
+end
+```
+Parameters in the query string are not validated or processed by Apivore in any way.
+
 Post parameters can be specified with the `_data` key as follows:
 
 ```ruby

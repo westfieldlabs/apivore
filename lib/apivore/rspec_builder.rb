@@ -32,7 +32,7 @@ module Apivore
           raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
         end
       end
-      path
+      path + (data['_query_string'] ? "?#{data['_query_string']}" : '')
     end
 
     def apivore_check_consistency_with_swagger_at(uri)
@@ -75,7 +75,6 @@ module Apivore
 
             setup_data = get_apivore_setup(path, method, response_code)
             full_path = apivore_build_path(swagger.base_path + path, setup_data)
-
             # e.g., get(full_path)
             if setup_data.is_a?(Hash)
               send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
