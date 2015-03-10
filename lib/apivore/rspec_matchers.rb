@@ -46,7 +46,7 @@ module Apivore
             nil
           else
             # 'x-services' is added by api.westfield.io - services shouldn't need to define it
-            definition_fields.tap{|d|d.delete 'x-services'}
+            definition_fields.except 'x-services'
           end
         end.compact
       end
