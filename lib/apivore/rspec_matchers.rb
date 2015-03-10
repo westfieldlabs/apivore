@@ -35,7 +35,7 @@ module Apivore
       end
     end
 
-    matcher :be_consistent_with_swagger_definitions do |master_swagger|
+    matcher :be_consistent_with_swagger_definitions do |master_swagger, current_service|
 
       attr_reader :actual, :expected
 
@@ -43,30 +43,16 @@ module Apivore
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"].transform_values do |definition|
           # 'x-services' is added by api.westfield.io - services shouldn't need to define it
-          definition.tap{|d|d.delete 'x-services'}
-        end
+          if [current_service] == definition['x-services']
+            definition.tap{|d|d.delete 'x-services'}
+          else
+            definition.tap{|d|d.delete 'x-services'}
+          end
+        end.compact
         our_definitions = our_swagger["definitions"]
+
         @actual = our_definitions.slice(*master_definitions.keys)
         @expected = master_definitions.slice(*our_definitions.keys)
-        @actual == @expected
-      end
-
-      diffable
-    end
-
-    matcher :be_consistent_with_swagger_paths do |master_swagger|
-
-      attr_reader :actual, :expected
-
-      match do |body|
-        our_swagger = JSON.parse(body)
-        master_paths = master_swagger["paths"].transform_values do |path|
-          # 'x-services' is added by api.westfield.io - services shouldn't need to define it
-          path.tap{|p|p.delete 'x-services'}
-        end
-        our_paths = our_swagger["paths"]
-        @actual = our_paths.slice(*master_paths.keys)
-        @expected = master_paths.slice(*our_paths.keys)
         @actual == @expected
       end
 

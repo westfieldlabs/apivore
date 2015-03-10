@@ -35,7 +35,8 @@ module Apivore
       path
     end
 
-    def apivore_check_consistency_with_swagger_at(uri)
+    def apivore_check_consistency_with_swagger_at(uri, current_service = nil)
+      @@current_service = current_service
       @@master_swagger_uri = uri
     end
 
@@ -61,10 +62,7 @@ module Apivore
         if @@master_swagger_uri
           req = Net::HTTP.get(@@master_swagger_uri, "/swagger.json", 2999)
           master_swagger = JSON.parse(req)
-          it { should be_consistent_with_swagger_definitions master_swagger }
-          # This causes problems for migrations fixing the above test
-          # Once those migrations are complete, this should be enabled
-          xit { should be_consistent_with_swagger_paths master_swagger }
+          it { should be_consistent_with_swagger_definitions master_swagger, @@current_service }
         end
       end
 
