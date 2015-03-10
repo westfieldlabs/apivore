@@ -39,18 +39,22 @@ module Apivore
 
       attr_reader :actual, :expected
 
-      match do |body|
-        our_swagger = JSON.parse(body)
-        master_definitions = master_swagger["definitions"].transform_values do |definition|
-          # 'x-services' is added by api.westfield.io - services shouldn't need to define it
-          if [current_service] == definition['x-services']
+      def cleaned_definitions(definitions, current_service)
+        definitions.transform_values do |definition_fields|
+          # We ignore definitions that are owned exclusive by the current_service
+          if [current_service] == definition_fields['x-services']
             nil
           else
-            definition.tap{|d|d.delete 'x-services'}
+            # 'x-services' is added by api.westfield.io - services shouldn't need to define it
+            definition_fields.tap{|d|d.delete 'x-services'}
           end
         end.compact
-        our_definitions = our_swagger["definitions"]
+      end
 
+      match do |body|
+        our_swagger = JSON.parse(body)
+        master_definitions = cleaned_definitions(master_swagger["definitions"], current_service)
+        our_definitions = our_swagger["definitions"]
         @actual = our_definitions.slice(*master_definitions.keys)
         @expected = master_definitions.slice(*our_definitions.keys)
         @actual == @expected
