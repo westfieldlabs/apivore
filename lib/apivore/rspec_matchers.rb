@@ -60,7 +60,10 @@ module Apivore
 
       match do |body|
         our_swagger = JSON.parse(body)
-        master_paths = master_swagger["paths"]
+        master_paths = master_swagger["paths"].transform_values do |path|
+          # 'x-services' is added by api.westfield.io - services shouldn't need to define it
+          path.tap{|p|p.delete 'x-services'}
+        end
         our_paths = our_swagger["paths"]
         @actual = our_paths.slice(*master_paths.keys)
         @expected = master_paths.slice(*our_paths.keys)
