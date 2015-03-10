@@ -44,7 +44,7 @@ module Apivore
         master_definitions = master_swagger["definitions"].transform_values do |definition|
           # 'x-services' is added by api.westfield.io - services shouldn't need to define it
           if [current_service] == definition['x-services']
-            definition.tap{|d|d.delete 'x-services'}
+            nil
           else
             definition.tap{|d|d.delete 'x-services'}
           end
