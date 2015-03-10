@@ -42,8 +42,8 @@ module Apivore
       match do |body|
         our_swagger = JSON.parse(body)
         master_definitions = master_swagger["definitions"].transform_values do |definition|
-          # 'x-source' is added by api.westfield.io - services shouldn't need to define it
-          definition.tap{|d|d.delete 'x-source'}
+          # 'x-services' is added by api.westfield.io - services shouldn't need to define it
+          definition.tap{|d|d.delete 'x-services'}
         end
         our_definitions = our_swagger["definitions"]
         @actual = our_definitions.slice(*master_definitions.keys)
