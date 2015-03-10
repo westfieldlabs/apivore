@@ -41,7 +41,7 @@ module Apivore
 
       def cleaned_definitions(definitions, current_service)
         definitions.transform_values do |definition_fields|
-          # We ignore definitions that are owned exclusive by the current_service
+          # We ignore definitions that are owned exclusively by the current_service
           if [current_service] == definition_fields['x-services']
             nil
           else
