@@ -35,7 +35,6 @@ module Apivore
           raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
         end
       end
-      path += (data && data['_query_string']) ? "?#{data['_query_string']}" : ''
       path
     end
 
@@ -74,12 +73,10 @@ module Apivore
       swagger.each_response do |path, method, response_code, fragment|
         describe "path #{path} method #{method} response #{response_code}" do
           it "responds with the specified models" do
-
             setup_data = get_apivore_setup(path, method, response_code)
             full_path = apivore_build_path(swagger.base_path + path, setup_data)
 
             send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
-           
             expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
 
             if fragment
