@@ -14,7 +14,7 @@ Currently this gem is not yet on rubygems.org
 Install from github using the following in your Gemfile:
 
     gem 'apivore', :github => 'westfieldlabs/apivore', :branch => 'master'
-  
+
 ***WARNING:*** If apivore is listed in the Gemfile _above_ rspec then some issues, specifically `NameError: uninitialized constant RSpec::Mocks`, may arise when trying to run specs.
 
 ## Usage

@@ -20,7 +20,10 @@ module Apivore
 
     def get_apivore_setup(path, method, response)
       setup = @@setups[path + method + response]
-      (instance_eval &setup if setup) || {}
+      if setup
+        result = instance_eval &setup
+      end
+      (result && result.is_a?(Hash)) ? result : {}
     end
 
     def apivore_build_path(path, data)
@@ -32,6 +35,7 @@ module Apivore
           raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
         end
       end
+      path += (data && data['_query_string']) ? "?#{data['_query_string']}" : ''
       path
     end
 
@@ -74,13 +78,8 @@ module Apivore
             setup_data = get_apivore_setup(path, method, response_code)
             full_path = apivore_build_path(swagger.base_path + path, setup_data)
 
-            # e.g., get(full_path)
-            if setup_data.is_a?(Hash)
-              send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
-            else
-              send(method, full_path)
-            end
-
+            send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
+           
             expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
 
             if fragment
