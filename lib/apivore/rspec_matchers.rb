@@ -40,16 +40,16 @@ module Apivore
       attr_reader :actual, :expected
 
       def cleaned_definitions(definitions, current_service)
-        definitions.transform_values do |definition_fields|
+        definitions.each do |key, definition_fields|
           # We ignore definitions that are owned exclusively by the current_service
           if [current_service] == definition_fields['x-services']
-            nil
+            definitions[key] = nil
           else
             # 'x-services' is added by api.westfield.io when aggregating swagger docs
             # Individual services will not have a 'x-services' property so we need to remove it to allow the comparison to pass
-            definition_fields.except 'x-services'
+            definitions[key] = definition_fields.except 'x-services'
           end
-        end.compact
+        end.select{ |_, value| !value.nil? }
       end
 
       match do |body|
