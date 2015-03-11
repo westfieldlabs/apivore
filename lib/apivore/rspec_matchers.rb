@@ -45,7 +45,7 @@ module Apivore
           if [current_service] == definition_fields['x-services']
             nil
           else
-            # 'x-services' is added the aggregated swagger doc provided by api.westfield.io
+            # 'x-services' is added by api.westfield.io when aggregating swagger docs
             # Individual services will not have a 'x-services' property so we need to remove it to allow the comparison to pass
             definition_fields.except 'x-services'
           end
