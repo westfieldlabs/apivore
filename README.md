@@ -47,6 +47,15 @@ describe "the API" do
   validate("api/swagger.json")
 end
 ```
+A query string can be specified with the `_query_string` key as follows:
+
+```ruby
+apivore_setup '/books.json', 'get', '200' do
+  {"_query_string" => "title=Hello%20World&edition=3"}
+end
+```
+Parameters in the query string are not validated or processed by Apivore in any way.
+
 Post parameters can be specified with the `_data` key as follows:
 
 ```ruby
