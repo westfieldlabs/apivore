@@ -8,13 +8,13 @@ module Apivore
     matcher :be_valid_swagger do |version|
       match do |body|
         @api_description = Swagger.new(JSON.parse(body))
-        @api_description.validate.empty?
+        @errors = @api_description.validate
+        @errors.empty?
       end
 
       failure_message do |body|
-        msg = "The document fails to validate as Swagger #{@api_description.version}:\n\n"
-        msg += @api_description.validate.join("\n\n")
-        msg
+        msg = "The document fails to validate as Swagger #{@api_description.version}:\n"
+        msg += @errors.join("\n")
       end
     end
 
