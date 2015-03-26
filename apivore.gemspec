@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = 'charles.horn@gmail.com'
   s.files       = ['lib/apivore.rb', 'lib/apivore/rspec_matchers.rb', 'lib/apivore/rspec_builder.rb', 'data/swagger_2.0_schema.json']
   s.homepage    = 'http://github.com/hornc/apivore'
-  s.add_runtime_dependency 'json-schema', '~> 2.4.1'
+  s.add_runtime_dependency 'json-schema', '~> 2.5.1'
   s.add_runtime_dependency 'rspec-expectations', '~> 3.1'
   s.add_runtime_dependency 'rspec-mocks', '~> 3.1'
   s.add_runtime_dependency 'actionpack', '~> 4'
