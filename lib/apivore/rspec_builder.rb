@@ -76,7 +76,11 @@ module Apivore
             setup_data = get_apivore_setup(path, method, response_code)
             full_path = apivore_build_path(swagger.base_path + path, setup_data)
             # e.g., get(full_path)
-            send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
+            begin
+              send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
+            rescue
+              raise "Unable to #{method} #{full_path} -- invalid response from server: #{$!}."
+            end
             expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
 
             if fragment
