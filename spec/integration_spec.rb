@@ -11,7 +11,7 @@ context "Apivore tests running against a mock API" do
     it 'should show an alert that the specific path is unimplemented' do
       stdout = `rspec spec/data/example_specs.rb --example 'unimplemented path in doc'`
       expect(stdout).to match(/1 failure/)
-      expect(stdout).to match(/1\) API testing scenarios unimplemented path in doc path \/not_implemented.json method get response 200 responds with the specified models/)
+      expect(stdout).to match(/expected 200 array, got 404/)
     end
   end
 
