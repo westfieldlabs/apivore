@@ -46,6 +46,8 @@ module Rails
       else
         if test_swagger_files.include?(path)
           respond_with 200, File.read(File.expand_path("../../data#{path}", __FILE__))
+        else
+          respond_with 404
         end
       end
     end
