@@ -57,7 +57,7 @@ module Apivore
 
     def validate(swagger_path)
 
-      describe "the swagger documentation" do
+      describe "swagger documentation" do
         before { get swagger_path }
         subject { body }
         it { should be_valid_swagger }
