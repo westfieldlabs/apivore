@@ -25,6 +25,7 @@ module Apivore
     def each_response(&block)
       paths.each do |path, path_data|
         path_data.each do |verb, method_data|
+          raise "No responses found in swagger for path '#{path}', method #{verb}: #{method_data.inspect}" if method_data.responses.nil?
           method_data.responses.each do |response_code, response_data|
             schema_location = nil
             if response_data.schema
