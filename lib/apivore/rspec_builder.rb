@@ -14,16 +14,31 @@ module Apivore
 
     @@master_swagger_uri = nil
 
-    def apivore_setup(path, method, response, &block)
+    def apivore_setup(path = '', method = '', response = '', &block)
       @@setups[path + method + response] = block
     end
 
     def get_apivore_setup(path, method, response)
-      setup = @@setups[path + method + response]
-      if setup
-        result = instance_eval &setup
+      keys_to_search = [
+        '', # base setup key
+        response,
+        method,
+        path,
+        method + response,
+        # Is there a use-case for the following two? Added for completeness
+        # path + response,
+        # path + method,
+        path + method + response
+      ]
+      final_result = {}
+      keys_to_search.each do |k|
+        setup = @@setups[k]
+        if setup
+          result = instance_eval &setup
+          final_result.merge!(result) if result.is_a?(Hash)
+        end
       end
-      (result && result.is_a?(Hash)) ? result : {}
+      final_result
     end
 
     def apivore_build_path(path, data)
