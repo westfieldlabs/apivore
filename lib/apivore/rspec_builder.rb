@@ -14,8 +14,12 @@ module Apivore
 
     @@master_swagger_uri = nil
 
-    def apivore_setup(path = '', method = '', response = '', &block)
-      @@setups[path + method + response] = block
+    # Setup tests against a combination of path, method, and response.
+    # - *keys -> A combination of path, method, and/or response. Blank '' for base setup.
+    # - &block -> Code block to execute to setup the test. A hash of path subsitution parameters can be returned if required.
+    # All matching code blocks are executed, and substitution parameters are merged in order of specificity.
+    def apivore_setup(*keys, &block)
+      @@setups[keys.join] = block
     end
 
     def get_apivore_setup(path, method, response)
@@ -26,8 +30,8 @@ module Apivore
         path,
         method + response,
         # Is there a use-case for the following two? Added for completeness
-        # path + response,
-        # path + method,
+        path + response,
+        path + method,
         path + method + response
       ]
       final_result = {}
