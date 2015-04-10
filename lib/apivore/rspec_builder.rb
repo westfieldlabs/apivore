@@ -29,7 +29,6 @@ module Apivore
         method,
         path,
         method + response,
-        # Is there a use-case for the following two? Added for completeness
         path + response,
         path + method,
         path + method + response
