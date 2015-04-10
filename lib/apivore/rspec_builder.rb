@@ -14,16 +14,34 @@ module Apivore
 
     @@master_swagger_uri = nil
 
-    def apivore_setup(path, method, response, &block)
-      @@setups[path + method + response] = block
+    # Setup tests against a combination of path, method, and response.
+    # - *keys -> A combination of path, method, and/or response. Blank '' for base setup.
+    # - &block -> Code block to execute to setup the test. A hash of path subsitution parameters can be returned if required.
+    # All matching code blocks are executed, and substitution parameters are merged in order of specificity.
+    def apivore_setup(*keys, &block)
+      @@setups[keys.join] = block
     end
 
     def get_apivore_setup(path, method, response)
-      setup = @@setups[path + method + response]
-      if setup
-        result = instance_eval &setup
+      keys_to_search = [
+        '', # base setup key
+        response,
+        method,
+        path,
+        method + response,
+        path + response,
+        path + method,
+        path + method + response
+      ]
+      final_result = {}
+      keys_to_search.each do |k|
+        setup = @@setups[k]
+        if setup
+          result = instance_eval &setup
+          final_result.merge!(result) if result.is_a?(Hash)
+        end
       end
-      (result && result.is_a?(Hash)) ? result : {}
+      final_result
     end
 
     def apivore_build_path(path, data)

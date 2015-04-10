@@ -47,6 +47,22 @@ describe "the API" do
   validate("api/swagger.json")
 end
 ```
+
+`apivore_setup` blocks can be specified against a combination of path, method, and response, or left blank for base setup code to be called before all tests. For each test against a swagger path expected response, all matching code blocks are executed, and substitution parameters are merged in order of specificity. Have a look at the [spec tests](spec/rspec_builder_spec.rb) for more examples and expected outcomes.
+
+**Examples**
+```ruby
+apivore_setup do
+  # Put general test stub code here which will be executed before all path tests
+  { 'id' => 1, 'name' => 'michel' }
+end
+
+apivore_setup "get", "200" do
+  # This block only applies to GET path tests where the expected result is a 200 response code
+  { 'id' => 2, 'name' => 'dora' }
+end
+```
+
 A query string can be specified with the `_query_string` key as follows:
 
 ```ruby
