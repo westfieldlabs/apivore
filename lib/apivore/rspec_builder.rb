@@ -6,6 +6,29 @@ require 'hashie'
 require 'pry'
 
 module Apivore
+  class RspecTestThing
+    include ::RSpec::Matchers
+    include ActionDispatch::Integration
+
+    attr_accessor :fragment, :response
+    attr_reader :path, :response_code, :swagger, :http_method
+    def initialize(path, http_method, response_code, swagger)
+      @swagger = swagger
+      @http_method = http_method
+      @path = path
+      @response_code = response_code
+      puts path
+    end
+
+    def correct?
+      expect(response.status).to be(response_code.to_i)#, "expected status #{response_code}, got #{response.status}: #{response.body}"
+      if fragment
+        expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
+      end
+      true
+    end
+  end
+
   module RspecBuilder
     include Apivore::RspecMatchers
     include ActionDispatch::Integration
@@ -33,14 +56,33 @@ module Apivore
       end
     end
 
+    def swagger_description(path, method, response_code, params = {}, &block)
+      response_code = response_code.to_s
+      describe "path #{path} method #{method} response #{response_code}" do
+        subject { RspecTestThing.new(path, method, response_code, @@swagger) }
+        before do
+          apivore_request(path, method, response_code, params)
+          subject.response = response
+          expect(response).to have_http_status(response_code)#, "expected status #{response_code}, got #{response.status}: #{response.body}"
+        end
+        example(&block)
+
+        #  do
+        #   apivore_request(path, method, response_code, {})
+        #
+        #   subject.response = response
+        #   instance_eval("is_expected.to be_correct", file_name, line_number)
+        # end
+      end
+    end
+
     def apivore_request(path, method, response_code, setup_data)
       mapped_path = @@mappings[path]
       raise "undocumented path: #{path}" if mapped_path.nil?
       mapped_method = mapped_path[method]
       raise "undocumented method: #{method} for path: #{path}" if mapped_method.nil?
-      fragment = mapped_method.delete(response_code)
+      subject.fragment = mapped_method.delete(response_code)
       full_path = apivore_build_path(@@swagger.base_path + path, setup_data)
-
       # Remove the path we are about to test
       if mapped_method.size == 0
         mapped_path.delete(method)
@@ -53,10 +95,6 @@ module Apivore
         send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
       rescue
         raise "Unable to #{method} #{full_path} -- invalid response from server: #{$!}."
-      end
-
-      if fragment
-        expect(response.body).to conform_to_the_documented_model_for(@@swagger, fragment)
       end
     end
 
@@ -111,8 +149,13 @@ module Apivore
       Apivore::Swagger.new JSON.parse(session.response.body)
     end
 
-    def validate_against(swagger_path)
+    def all_done
+      # after do
+        expect(@@mappings).to eql({}), "Paths have not been documented"
+      # end
+    end
 
+    def validate_against(swagger_path)
       describe "swagger documentation" do
         before { get swagger_path }
         subject { body }
@@ -125,9 +168,6 @@ module Apivore
         end
       end
 
-      after(:all) do
-        expect(@@mappings).to eql({})
-      end
       @@swagger = apivore_swagger(swagger_path)
 
       @@mappings = {}
@@ -136,6 +176,14 @@ module Apivore
         @@mappings[path][method] ||= {}
         raise "duplicate" unless @@mappings[path][method][response_code].nil?
         @@mappings[path][method][response_code] = fragment
+      end
+    end
+
+    def ensure_paths_are_tested
+      context "nested so it runs after" do
+        it "checks all the things" do
+          all_done
+        end
       end
     end
 
