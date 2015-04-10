@@ -3,6 +3,7 @@ require 'action_controller'
 require 'action_dispatch'
 require 'rspec/mocks'
 require 'hashie'
+require 'pry'
 
 module Apivore
   module RspecBuilder
@@ -18,8 +19,45 @@ module Apivore
     # - *keys -> A combination of path, method, and/or response. Blank '' for base setup.
     # - &block -> Code block to execute to setup the test. A hash of path subsitution parameters can be returned if required.
     # All matching code blocks are executed, and substitution parameters are merged in order of specificity.
-    def apivore_setup(*keys, &block)
-      @@setups[keys.join] = block
+    def apivore_setup(path, method, response_code = 200, &block)
+      response_code = response_code.to_s
+      # @@setups[keys.join] = block
+      describe "path #{path} method #{method} response #{response_code}" do
+        it "responds with the specified models" do
+          setup_data = block.call
+          setup_data = {} unless setup_data.is_a? Hash
+          # e.g., get(full_path)
+          apivore_request(path, method, response_code, setup_data)
+          expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
+        end
+      end
+    end
+
+    def apivore_request(path, method, response_code, setup_data)
+      mapped_path = @@mappings[path]
+      raise "undocumented path: #{path}" if mapped_path.nil?
+      mapped_method = mapped_path[method]
+      raise "undocumented method: #{method} for path: #{path}" if mapped_method.nil?
+      fragment = mapped_method.delete(response_code)
+      full_path = apivore_build_path(@@swagger.base_path + path, setup_data)
+
+      # Remove the path we are about to test
+      if mapped_method.size == 0
+        mapped_path.delete(method)
+        if mapped_path.size == 0
+          @@mappings.delete(path)
+        end
+      end
+
+      begin
+        send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
+      rescue
+        raise "Unable to #{method} #{full_path} -- invalid response from server: #{$!}."
+      end
+
+      if fragment
+        expect(response.body).to conform_to_the_documented_model_for(@@swagger, fragment)
+      end
     end
 
     def get_apivore_setup(path, method, response)
@@ -73,7 +111,7 @@ module Apivore
       Apivore::Swagger.new JSON.parse(session.response.body)
     end
 
-    def validate(swagger_path)
+    def validate_against(swagger_path)
 
       describe "swagger documentation" do
         before { get swagger_path }
@@ -87,28 +125,19 @@ module Apivore
         end
       end
 
-      swagger = apivore_swagger(swagger_path)
-      swagger.each_response do |path, method, response_code, fragment|
-        describe "path #{path} method #{method} response #{response_code}" do
-          it "responds with the specified models" do
-            setup_data = get_apivore_setup(path, method, response_code)
-            full_path = apivore_build_path(swagger.base_path + path, setup_data)
-            # e.g., get(full_path)
-            begin
-              send(method, full_path, setup_data['_data'] || {}, setup_data['_headers'] || {})
-            rescue
-              raise "Unable to #{method} #{full_path} -- invalid response from server: #{$!}."
-            end
-            expect(response).to have_http_status(response_code), "expected #{response_code} array, got #{response.status}: #{response.body}"
-
-            if fragment
-              expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
-            end
-
-          end
-        end
+      after(:all) do
+        expect(@@mappings).to eql({})
       end
+      @@swagger = apivore_swagger(swagger_path)
 
+      @@mappings = {}
+      @@swagger.each_response do |path, method, response_code, fragment|
+        @@mappings[path] ||= {}
+        @@mappings[path][method] ||= {}
+        raise "duplicate" unless @@mappings[path][method][response_code].nil?
+        @@mappings[path][method][response_code] = fragment
+      end
     end
+
   end
 end
