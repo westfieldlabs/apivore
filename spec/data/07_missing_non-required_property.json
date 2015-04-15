@@ -60,9 +60,7 @@
         "name": {
           "type": ["string", "null"],
           "description": "Service name"
-        }
-      },
-      "additionalProperties": {
+        },
         "test_non-required": {
           "type": ["string"],
           "description": "Test property to see how apivore behaves when this field is not present in a response"

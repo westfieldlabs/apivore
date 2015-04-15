@@ -31,23 +31,14 @@ context "Apivore tests running against a mock API" do
     end
   end
 
-  describe "a response containing extra (undocumented) properties (configured with non-strict validation)" do
-    it 'should pass validation' do
-      pending "needs configurable option to allow :strict => false validation"
-      # TODO: set configuration to validate :strict => true so the strictness behaviour is configurable
-      # This swagger doc does not document one of the properties returned by the mock API
-      stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
-      expect(stdout).to match(/0 failures/)
-    end
-  end
-
-  describe "a response containing extra (undocumented) properties (default strict validation)" do
+  describe "a response containing extra (undocumented) properties where additionalProperties: false " do
     it 'should fail on undocumented properties for both index and view' do
       # This swagger doc does not document one of the properties returned by the mock API
       stdout = `rspec spec/data/example_specs.rb --example 'extra properties'`
       expect(stdout).to match(/2 failures/)
-      expect(stdout).to match("'/api/services.json#/0' contained undefined properties: 'name'") # Index
-      expect(stdout).to match("'/api/services/1.json#/' contained undefined properties: 'name'")  # View
+      msg = 'contains additional properties \["name"\] outside of the schema when none are allowed'
+      expect(stdout).to match("'/api/services.json#/0' #{msg}") # Index
+      expect(stdout).to match("'/api/services/1.json#/' #{msg}") # View
     end
   end
 
