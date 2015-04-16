@@ -67,7 +67,7 @@ module Apivore
     matcher :conform_to_the_documented_model_for do |swagger, fragment|
       match do |body|
         body = JSON.parse(body)
-        @errors = JSON::Validator.fully_validate(swagger, body, fragment: fragment, strict: true)
+        @errors = JSON::Validator.fully_validate(swagger, body, fragment: fragment)
         @errors.empty?
       end
 
