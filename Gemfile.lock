@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apivore (0.0.1)
+    apivore (0.0.2)
       actionpack (~> 4)
       hashie (>= 3.3.1)
       json-schema (~> 2.5.1)
