@@ -15,15 +15,15 @@ module Apivore
     end
 
     def has_path?(path)
-      !mappings[path].nil?
+      mappings.has_key?(path)
     end
 
     def has_method_at_path?(path, method)
-      !mappings[path][method].nil?
+      mappings[path].has_key?(method)
     end
 
     def has_response_code_for_path?(path, method, code)
-      !mappings[path][method][code.to_s].nil?
+      mappings[path][method].has_key?(code.to_s)
     end
 
     def has_matching_document_for(path, method, code, body)
@@ -67,6 +67,7 @@ module Apivore
     def initialize(method, path, expected_response_code, params = {})
       @method = method.to_s
       @path = path.to_s
+      @params = params
       @expected_response_code = expected_response_code.to_i
     end
 
@@ -74,12 +75,25 @@ module Apivore
       pre_checks(swagger_checker)
 
       unless has_errors?
-        send(method, swagger_checker.base_path + path)
+        send(method, apivore_build_path(swagger_checker.base_path + path, params))
         post_checks(swagger_checker)
       end
 
       !has_errors?
     end
+
+    def apivore_build_path(path, data)
+      path.scan(/\{([^\}]*)\}/).each do |param|
+        key = param.first
+        if data && data[key]
+          path = path.gsub "{#{key}}", data[key].to_s
+        else
+          raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
+        end
+      end
+      path + (data['_query_string'] ? "?#{data['_query_string']}" : '')
+    end
+
 
     def pre_checks(swagger_checker)
       check_request_path(swagger_checker)
@@ -96,7 +110,7 @@ module Apivore
       elsif !swagger_checker.has_method_at_path?(path, method)
         errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{method} #{path}"
       elsif !swagger_checker.has_response_code_for_path?(path, method, expected_response_code)
-        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented response code of #{expected_response_code} at path #{path}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented response code of #{expected_response_code} at path #{method} #{path}"
       end
     end
 
@@ -177,8 +191,8 @@ module Apivore
     @@setups ||= {}
 
     @@master_swagger_uri = nil
-    def document(method, path, response_code)
-      Document.new(method, path, response_code)
+    def document(method, path, response_code, params = {})
+      Document.new(method, path, response_code, params)
     end
     # Setup tests against a combination of path, method, and response.
     # - *keys -> A combination of path, method, and/or response. Blank '' for base setup.
