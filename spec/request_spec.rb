@@ -43,7 +43,7 @@ describe "Example API", type: :apivore, order: :defined do
     end
   end
 
-  context "tests everything which is documented" do
+  context "and" do
     it { is_expected.to document_all_paths }
   end
 
