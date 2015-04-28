@@ -6,7 +6,7 @@ describe "Example API", type: :apivore, order: :defined do
   subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
   context "has valid paths" do
     it "documents /services.json" do
-      expect(subject).to document(:get, "/services", 200)
+      expect(subject).to document(:get, "/services.json", 200)
     end
     # swagger_description('/services.json', 'get', '400') { is_expected.to be_correct }
     # swagger_description(

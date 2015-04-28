@@ -15,23 +15,46 @@ module Apivore
     end
 
     def has_path?(path)
-      false
+      !mappings[path].nil?
     end
 
-    def has_response_code_for_path?(path, code)
-      false
+    def has_method_at_path?(path, method)
+      !mappings[path][method].nil?
     end
 
-    def has_matching_document_for(path, code, body)
-      false
+    def has_response_code_for_path?(path, method, code)
+      !mappings[path][method][code.to_s].nil?
     end
 
-    attr_reader :path
+    def has_matching_document_for(path, method, code, body)
+      JSON::Validator.fully_validate(
+        swagger, body, fragment: fragment(path, method, code), strict: true
+      )
+    end
+
+    def fragment(path, method, code)
+      mappings[path][method][code]
+    end
+
+    def base_path
+      @swagger.base_path
+    end
+
+    attr_reader :swagger_path, :mappings, :swagger
 
     private
 
-    def initialize(path)
-      @path = path
+    def initialize(swagger_path)
+      @swagger_path = swagger_path
+      @swagger = apivore_swagger(swagger_path)
+
+      @mappings = {}
+      @swagger.each_response do |path, method, response_code, fragment|
+        @mappings[path] ||= {}
+        @mappings[path][method] ||= {}
+        raise "duplicate" unless @mappings[path][method][response_code].nil?
+        @mappings[path][method][response_code] = fragment
+      end
     end
 
   end
@@ -42,16 +65,16 @@ module Apivore
     attr_reader :method, :path, :expected_response_code, :params
 
     def initialize(method, path, expected_response_code, params = {})
-      @method = method
-      @path = path
-      @expected_response_code = expected_response_code
+      @method = method.to_s
+      @path = path.to_s
+      @expected_response_code = expected_response_code.to_i
     end
 
     def matches?(swagger_checker)
       pre_checks(swagger_checker)
 
       unless has_errors?
-        send(method, path)
+        send(method, swagger_checker.base_path + path)
         post_checks(swagger_checker)
       end
 
@@ -69,9 +92,11 @@ module Apivore
 
     def check_request_path(swagger_checker)
       if !swagger_checker.has_path?(path)
-        errors << "Swagger doc: #{swagger_checker.path} does not have a documented path for #{path}"
-      elsif !swagger_checker.has_response_code_for_path?(path, expected_response_code)
-        errors << "Swagger doc: #{swagger_checker.path} does not have a documented response code of #{expected_response_code} at path #{path}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{path}"
+      elsif !swagger_checker.has_method_at_path?(path, method)
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{method} #{path}"
+      elsif !swagger_checker.has_response_code_for_path?(path, method, expected_response_code)
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented response code of #{expected_response_code} at path #{path}"
       end
     end
 
@@ -82,8 +107,9 @@ module Apivore
     end
 
     def check_response_is_valid(swagger_checker)
-      if !swagger_checker.has_matching_document_for(path, response.status, response_body)
-        errors << "Mismatch error"
+      errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
+      unless errors.empty?
+        errors.concat!(errors)
       end
     end
 
