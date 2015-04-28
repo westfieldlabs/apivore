@@ -4,29 +4,143 @@ require 'action_dispatch'
 require 'rspec/mocks'
 require 'hashie'
 require 'pry'
+require 'rspec/expectations'
 
 module Apivore
-  class RspecTestThing
-    include ::RSpec::Matchers
-    include ActionDispatch::Integration
+  class SwaggerChecker
+    PATH_TO_CHECKER_MAP = {}
 
-    attr_accessor :fragment, :response
-    attr_reader :path, :response_code, :swagger, :http_method
-    def initialize(path, http_method, response_code, swagger)
-      @swagger = swagger
-      @http_method = http_method
+    def self.instance_for(path)
+      PATH_TO_CHECKER_MAP[path] ||= new(path)
+    end
+
+    def has_path?(path)
+      false
+    end
+
+    def has_response_code_for_path?(path, code)
+      false
+    end
+
+    def has_matching_document_for(path, code, body)
+      false
+    end
+
+    attr_reader :path
+
+    private
+
+    def initialize(path)
       @path = path
-      @response_code = response_code
-      puts path
     end
 
-    def correct?
-      expect(response.status).to be(response_code.to_i)#, "expected status #{response_code}, got #{response.status}: #{response.body}"
-      if fragment
-        expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
-      end
-      true
+  end
+
+  class Document
+    include ::ActionDispatch::Integration::Runner
+
+    attr_reader :method, :path, :expected_response_code, :params
+
+    def initialize(method, path, expected_response_code, params = {})
+      @method = method
+      @path = path
+      @expected_response_code = expected_response_code
     end
+
+    def matches?(swagger_checker)
+      pre_checks(swagger_checker)
+
+      unless has_errors?
+        send(method, path)
+        post_checks(swagger_checker)
+      end
+
+      !has_errors?
+    end
+
+    def pre_checks(swagger_checker)
+      check_request_path(swagger_checker)
+    end
+
+    def post_checks(swagger_checker)
+      check_status_code
+      check_response_is_valid(swagger_checker) unless has_errors?
+    end
+
+    def check_request_path(swagger_checker)
+      if !swagger_checker.has_path?(path)
+        errors << "Swagger doc: #{swagger_checker.path} does not have a documented path for #{path}"
+      elsif !swagger_checker.has_response_code_for_path?(path, expected_response_code)
+        errors << "Swagger doc: #{swagger_checker.path} does not have a documented response code of #{expected_response_code} at path #{path}"
+      end
+    end
+
+    def check_status_code
+      if response.status != expected_response_code
+        errors << "Path #{path} did not respond with expected status code. Expected #{expected_response_code} got #{response.status}"
+      end
+    end
+
+    def check_response_is_valid(swagger_checker)
+      if !swagger_checker.has_matching_document_for(path, response.status, response_body)
+        errors << "Mismatch error"
+      end
+    end
+
+    def response_body
+      JSON.parse(response.body) unless response.body.blank?
+    end
+
+    def has_errors?
+      !errors.empty?
+    end
+
+    def failure_message
+      errors.join(" ")
+    end
+
+    def errors
+      @errors ||= []
+    end
+
+    # Required by ActionDispatch::Integration::Runner
+    def app
+      ::Rails.application
+    end
+  end
+
+  module RspecHelpers
+    # extend ::RSpec::Matchers::DSL
+
+    # matcher :document do |method, path, response_code|
+    #   extend ActionDispatch::Integration
+    #   include ActionDispatch::Integration
+    #   match { |subject|
+    #     send(method, path)
+    #     actual == expected
+    #   }
+    # end
+    # include ::RSpec::Matchers
+    # include ActionDispatch::Integration
+
+
+    # attr_accessor :fragment, :response
+    # attr_reader :path, :response_code, :swagger, :http_method
+    # def initialize(path, http_method, response_code, swagger)
+    #   @swagger = swagger
+    #   @http_method = http_method
+    #   @path = path
+    #   @response_code = response_code
+    #   puts path
+    # end
+    #
+    # def correct?
+    #   expect(response.status).to be(response_code.to_i)#, "expected status #{response_code}, got #{response.status}: #{response.body}"
+    #   if fragment
+    #     expect(response.body).to conform_to_the_documented_model_for(swagger, fragment)
+    #   end
+    #   true
+    # end
   end
 
   module RspecBuilder
@@ -37,7 +151,9 @@ module Apivore
     @@setups ||= {}
 
     @@master_swagger_uri = nil
-
+    def document(method, path, response_code)
+      Document.new(method, path, response_code)
+    end
     # Setup tests against a combination of path, method, and response.
     # - *keys -> A combination of path, method, and/or response. Blank '' for base setup.
     # - &block -> Code block to execute to setup the test. A hash of path subsitution parameters can be returned if required.
