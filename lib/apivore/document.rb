@@ -100,6 +100,10 @@ module Apivore
       @errors ||= []
     end
 
+    def description
+      "validate that #{method} #{path} returns #{expected_response_code}"
+    end
+
     # Required by ActionDispatch::Integration::Runner
     def app
       ::Rails.application
