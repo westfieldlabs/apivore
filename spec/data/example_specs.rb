@@ -47,9 +47,17 @@ context "API testing scenarios" do
     end
   end
 
-  # describe "extra properties", :type => :request do
-  #   validate("/05_extra_properties.json")
-  # end
+  describe "extra properties", :type => :request do
+    subject { Apivore::SwaggerChecker.instance_for("/05_extra_properties.json") }
+
+    it "fails" do
+      expect(subject).to document(:get, "/services.json", 200)
+    end
+
+    it "also fails" do
+      expect(subject).to document(:get, "/services/{id}.json", 200, { "id" => 1})
+    end
+  end
   #
   # describe "missing required", :type => :request do
   #   validate("/06_missing_required_property.json")
