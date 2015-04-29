@@ -1,8 +1,5 @@
-require 'apivore/rspec_matchers'
 require 'apivore/document'
-require 'apivore/swagger_checker'
 require 'apivore/all_documented_routes_tested'
-require 'hashie'
 
 module Apivore
   module RspecHelpers
@@ -13,9 +10,5 @@ module Apivore
     def document_all_paths
       AllDocumentedRoutesTested.new
     end
-  end
-
-  module RspecBuilder
-
   end
 end

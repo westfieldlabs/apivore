@@ -1,5 +1,8 @@
-require 'apivore/rspec_builder'
+require 'hashie'
+
 require 'apivore/rspec_matchers'
+require 'apivore/rspec_helpers'
+require 'apivore/swagger_checker'
 
 module Apivore
   class Swagger < Hashie::Mash

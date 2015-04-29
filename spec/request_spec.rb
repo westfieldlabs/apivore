@@ -1,5 +1,4 @@
 require 'spec_helper'
-include Apivore::RspecBuilder
 
 describe "Example API", type: :apivore, order: :defined do
 
