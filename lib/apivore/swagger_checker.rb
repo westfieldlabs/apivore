@@ -63,7 +63,6 @@ module Apivore
       session = ActionDispatch::Integration::Session.new(Rails.application)
       begin
         session.get swagger_path
-        # get swagger_path
       rescue
         # TODO: make this fail inside rspec test execution rather than immediately raise an exception.
         # ALSO, handle other scenarios where we can't get a response to generate tests, e.g 500s, invalid formats etc
