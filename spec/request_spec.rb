@@ -7,36 +7,36 @@ describe "Example API", type: :apivore, order: :defined do
   subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
 
   context "has valid paths" do
-    it "documents /services.json" do
-      expect(subject).to document(:get, "/services.json", 200)
+    it do
+      expect(subject).to validate(:get, "/services.json", 200)
     end
 
-    it "documents /services.json" do
-      expect(subject).to document(
+    it do
+      expect(subject).to validate(
         :post, "/services.json", 204, {'name' => 'hello world'}
       )
     end
 
-    it "documents /services/{id}.json" do
-      expect(subject).to document(
+    it do
+      expect(subject).to validate(
         :get, "/services/{id}.json", 200, {'id' => 1}
       )
     end
 
-    it "documents /services/{id}.json" do
-      expect(subject).to document(
+    it do
+      expect(subject).to validate(
         :put, "/services/{id}.json", 204, {'id' => 1}
       )
     end
 
-    it "documents /services/{id}.json" do
-      expect(subject).to document(
+    it do
+      expect(subject).to validate(
         :delete, "/services/{id}.json", 204, {'id' => 1}
       )
     end
 
-    it "documents /services/{id}.json" do
-      expect(subject).to document(
+    it do
+      expect(subject).to validate(
         :patch, "/services/{id}.json", 204, {'id' => 1}
       )
     end

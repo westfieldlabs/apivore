@@ -2,7 +2,7 @@ require 'action_controller'
 require 'action_dispatch'
 
 module Apivore
-  class Document
+  class Validator
     include ::ActionDispatch::Integration::Runner
 
     attr_reader :method, :path, :expected_response_code, :params
