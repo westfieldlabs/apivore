@@ -67,9 +67,11 @@ module Apivore
     end
 
     def check_response_is_valid(swagger_checker)
-      errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
-      unless errors.empty?
-        errors.concat!(errors)
+      swagger_errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
+      unless swagger_errors.empty?
+        errors.concat(
+          swagger_errors.map { |e| e.sub("'#", "'#{path}#").gsub(/^The property|in schema.*$/,'') }
+        )
       end
     end
 

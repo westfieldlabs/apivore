@@ -46,17 +46,5 @@ module Apivore
 
       diffable
     end
-
-    matcher :conform_to_the_documented_model_for do |swagger, fragment|
-      match do |body|
-        body = JSON.parse(body)
-        @errors = JSON::Validator.fully_validate(swagger, body, fragment: fragment)
-        @errors.empty?
-      end
-
-      failure_message do |body|
-        @errors.map { |e| e.sub("'#", "'#{path}#").gsub(/^The property|in schema.*$/,'') }.join("\n")
-      end
-    end
   end
 end
