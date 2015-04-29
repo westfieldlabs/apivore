@@ -37,13 +37,16 @@ context "API testing scenarios" do
     it "fails" do
       expect(subject).to document(:get, "/services/{id}.json", 200, { "id" => 1 })
     end
-    # validate("/03_mismatched_type_response.json")
   end
-  #
-  # describe "unexpected http response", :type => :request do
-  #   validate("/04_unexpected_http_response.json")
-  # end
-  #
+
+  describe "unexpected http response", :type => :request do
+    subject { Apivore::SwaggerChecker.instance_for("/04_unexpected_http_response.json") }
+
+    it "fails" do
+      expect(subject).to document(:get, "/services.json", 222)
+    end
+  end
+
   # describe "extra properties", :type => :request do
   #   validate("/05_extra_properties.json")
   # end

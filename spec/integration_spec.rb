@@ -21,7 +21,7 @@ context "Apivore tests running against a mock API" do
     it 'should show which path has the problem and what the expected and actual response codes are' do
       stdout = `rspec spec/data/example_specs.rb --example 'unexpected http response'`
       expect(stdout).to match(/1 failure/)
-      expect(stdout).to match(/expected 222 .*, got 200/)
+      expect(stdout).to match(/Expected 222 got 200/)
     end
   end
 
