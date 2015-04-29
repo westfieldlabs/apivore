@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe "Example API", type: :apivore, order: :defined do
-  include Apivore::RspecMatchers
-  include Apivore::RspecHelpers
-
   subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
 
   context "has valid paths" do
