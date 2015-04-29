@@ -104,5 +104,9 @@ module Apivore
     def app
       ::Rails.application
     end
+
+    # Required by rails
+    def reset_template_assertion
+    end
   end
 end
