@@ -33,22 +33,26 @@ context "API testing scenarios" do
   end
 
   describe "mismatched property type", :type => :request do
-    validate("/03_mismatched_type_response.json")
+    subject { Apivore::SwaggerChecker.instance_for("/03_mismatched_type_response.json") }
+    it "fails" do
+      expect(subject).to document(:get, "/services/{id}.json", 200, { "id" => 1 })
+    end
+    # validate("/03_mismatched_type_response.json")
   end
-
-  describe "unexpected http response", :type => :request do
-    validate("/04_unexpected_http_response.json")
-  end
-
-  describe "extra properties", :type => :request do
-    validate("/05_extra_properties.json")
-  end
-
-  describe "missing required", :type => :request do
-    validate("/06_missing_required_property.json")
-  end
-
-  describe "missing non-required", :type => :request do
-    validate("/07_missing_non-required_property.json")
-  end
+  #
+  # describe "unexpected http response", :type => :request do
+  #   validate("/04_unexpected_http_response.json")
+  # end
+  #
+  # describe "extra properties", :type => :request do
+  #   validate("/05_extra_properties.json")
+  # end
+  #
+  # describe "missing required", :type => :request do
+  #   validate("/06_missing_required_property.json")
+  # end
+  #
+  # describe "missing non-required", :type => :request do
+  #   validate("/07_missing_non-required_property.json")
+  # end
 end

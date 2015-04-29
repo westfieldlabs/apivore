@@ -70,7 +70,7 @@ module Apivore
       swagger_errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
       unless swagger_errors.empty?
         errors.concat(
-          swagger_errors.map { |e| e.sub("'#", "'#{path}#").gsub(/^The property|in schema.*$/,'') }
+          swagger_errors.map { |e| e.sub("'#", "'#{apivore_build_path(swagger_checker.base_path + path, params)}#").gsub(/^The property|in schema.*$/,'') }
         )
       end
     end
