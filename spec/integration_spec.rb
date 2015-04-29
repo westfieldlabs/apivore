@@ -1,11 +1,11 @@
 
 context "Apivore tests running against a mock API" do
 
-  describe "the swagger documents an unimplemented path" do
-    it 'should show an alert that the specific path is unimplemented' do
-      stdout = `rspec spec/data/example_specs.rb --example 'unimplemented path in doc'`
+  describe "the test checks undocumented path" do
+    it 'should show an alert that the specific path is undocumented' do
+      stdout = `rspec spec/data/example_specs.rb --example 'undocumented path in test'`
       expect(stdout).to match(/1 failure/)
-      expect(stdout).to match(/expected 200 array, got 404/)
+      expect(stdout).to match(/does not have a documented path/)
     end
   end
 
