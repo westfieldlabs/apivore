@@ -5,19 +5,6 @@ require 'net/http'
 module Apivore
   module RspecMatchers
     extend RSpec::Matchers::DSL
-    matcher :be_valid_swagger do |version|
-      match do |body|
-        @api_description = Swagger.new(JSON.parse(body))
-        @errors = @api_description.validate
-        @errors.empty?
-      end
-
-      failure_message do |body|
-        msg = "The document fails to validate as Swagger #{@api_description.version}:\n"
-        msg += @errors.join("\n")
-      end
-    end
-
     matcher :be_consistent_with_swagger_definitions do |master_swagger, current_service|
 
       attr_reader :actual, :expected

@@ -49,6 +49,7 @@ module Apivore
     def initialize(swagger_path)
       @swagger_path = swagger_path
       load_swagger_doc!
+      validate_swagger!
       setup_mappings!
     end
 
@@ -63,9 +64,18 @@ module Apivore
       rescue
         # TODO: make this fail inside rspec test execution rather than immediately raise an exception.
         # ALSO, handle other scenarios where we can't get a response to generate tests, e.g 500s, invalid formats etc
-        raise "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+        fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
       end
        JSON.parse(session.response.body)
+    end
+
+    def validate_swagger!
+      errors = swagger.validate
+      unless errors.empty?
+        msg = "The document fails to validate as Swagger #{swagger.version}:\n"
+        msg += errors.join("\n")
+        fail msg
+      end
     end
 
     def setup_mappings!
