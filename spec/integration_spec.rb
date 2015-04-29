@@ -1,11 +1,5 @@
 
 context "Apivore tests running against a mock API" do
-  describe "valid swagger and correctly implemented API" do
-    it 'passes when the swagger description does match the implemented API' do
-      stdout = `rspec spec/data/example_specs.rb --example 'passing doc'`
-      expect(stdout).to match(/0 failures/)
-    end
-  end
 
   describe "the swagger documents an unimplemented path" do
     it 'should show an alert that the specific path is unimplemented' do

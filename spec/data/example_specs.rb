@@ -1,7 +1,9 @@
 require 'spec_helper'
-include Apivore::RspecBuilder
+
 
 context "API testing scenarios" do
+  include Apivore::RspecMatchers
+  include Apivore::RspecHelpers
   before do
     apivore_setup '/services/{id}.json', 'get', '200' do
       {'id' => 1}
@@ -22,10 +24,6 @@ context "API testing scenarios" do
     apivore_setup '/services/{id}.json', 'patch', '204' do
       {'id' => 1}
     end
-  end
-
-  describe "passing doc", :type => :request do
-    validate("/swagger-doc.json")
   end
 
   describe "unimplemented path in doc", :type => :request do
