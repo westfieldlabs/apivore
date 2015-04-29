@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "Example API", type: :apivore, order: :defined do
-
+  include Apivore::RspecMatchers
   include Apivore::RspecHelpers
 
   subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
@@ -46,6 +46,11 @@ describe "Example API", type: :apivore, order: :defined do
     it 'tests all documented routes' do
       expect(subject).to document_all_paths
     end
+    # it 'has definitions consistent with the master docs' do
+    #   expect(subject).to be_consistent_with_swagger_definitions(
+    #     "api.westfield.io", 'deal'
+    #   )
+    # end
   end
 
 end
