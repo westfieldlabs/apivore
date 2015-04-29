@@ -42,8 +42,10 @@ describe "Example API", type: :apivore, order: :defined do
     end
   end
 
-  context "and" do
-    it { is_expected.to document_all_paths }
+  context 'and' do
+    it 'tests all documented routes' do
+      expect(subject).to document_all_paths
+    end
   end
 
 end
