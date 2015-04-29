@@ -18,23 +18,6 @@ module Apivore
       end
     end
 
-    matcher :have_models_for_all_get_endpoints do
-      match do |body|
-        @errors = []
-        swagger = Swagger.new(JSON.parse(body))
-        swagger.each_response do |path, method, response_code, schema|
-          if method == 'get' && !schema
-            @errors << "Unable to find a valid model for #{path} get #{response_code} response."
-          end
-        end
-        @errors.empty?
-      end
-
-      failure_message do
-        @errors.join("\n")
-      end
-    end
-
     matcher :be_consistent_with_swagger_definitions do |master_swagger, current_service|
 
       attr_reader :actual, :expected

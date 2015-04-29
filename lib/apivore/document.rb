@@ -55,6 +55,8 @@ module Apivore
         errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{method} #{path}"
       elsif !swagger_checker.has_response_code_for_path?(path, method, expected_response_code)
         errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented response code of #{expected_response_code} at path #{method} #{path}"
+      elsif method == "get" && swagger_checker.fragment(path, method, expected_response_code).nil?
+        errors << "Swagger doc: #{swagger_checker.swagger_path} missing response model for get request with #{path} for code #{expected_response_code}"
       end
     end
 

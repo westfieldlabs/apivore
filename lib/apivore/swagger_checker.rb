@@ -25,7 +25,7 @@ module Apivore
     end
 
     def fragment(path, method, code)
-      mappings[path][method][code]
+      mappings[path][method.to_s][code.to_s]
     end
 
     def remove_tested_end_point_response(path, method, code)
