@@ -2,7 +2,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'apivore'
-  s.version     = '0.0.2'
+  s.version     = '1.0.0'
   s.date        = '2014-11-16'
   s.summary     = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
   s.description = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
