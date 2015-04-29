@@ -48,8 +48,27 @@ module Apivore
 
     def initialize(swagger_path)
       @swagger_path = swagger_path
-      @swagger = apivore_swagger(swagger_path)
+      load_swagger_doc!
+      setup_mappings!
+    end
 
+    def load_swagger_doc!
+      @swagger = Apivore::Swagger.new(fetch_swagger!)
+    end
+
+    def fetch_swagger!
+      session = ActionDispatch::Integration::Session.new(Rails.application)
+      begin
+        session.get(swagger_path)
+      rescue
+        # TODO: make this fail inside rspec test execution rather than immediately raise an exception.
+        # ALSO, handle other scenarios where we can't get a response to generate tests, e.g 500s, invalid formats etc
+        raise "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+      end
+       JSON.parse(session.response.body)
+    end
+
+    def setup_mappings!
       @mappings = {}
       @swagger.each_response do |path, method, response_code, fragment|
         @mappings[path] ||= {}
@@ -57,18 +76,6 @@ module Apivore
         raise "duplicate" unless @mappings[path][method][response_code].nil?
         @mappings[path][method][response_code] = fragment
       end
-    end
-
-    def apivore_swagger(swagger_path)
-      session = ActionDispatch::Integration::Session.new(Rails.application)
-      begin
-        session.get swagger_path
-      rescue
-        # TODO: make this fail inside rspec test execution rather than immediately raise an exception.
-        # ALSO, handle other scenarios where we can't get a response to generate tests, e.g 500s, invalid formats etc
-        raise "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
-      end
-      Apivore::Swagger.new JSON.parse(session.response.body)
     end
   end
 end
