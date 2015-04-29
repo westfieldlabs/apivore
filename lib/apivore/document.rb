@@ -18,12 +18,21 @@ module Apivore
       pre_checks(swagger_checker)
 
       unless has_errors?
-        send(method, apivore_build_path(swagger_checker.base_path + path, params))
+        send(
+          method,
+          full_path(swagger_checker),
+          params['_data'] || {},
+          params['_headers'] || {}
+        )
         post_checks(swagger_checker)
         swagger_checker.remove_tested_end_point_response(path, method, expected_response_code)
       end
 
       !has_errors?
+    end
+
+    def full_path(swagger_checker)
+      apivore_build_path(swagger_checker.base_path + path, params)
     end
 
     def apivore_build_path(path, data)
@@ -70,7 +79,7 @@ module Apivore
       swagger_errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
       unless swagger_errors.empty?
         errors.concat(
-          swagger_errors.map { |e| e.sub("'#", "'#{apivore_build_path(swagger_checker.base_path + path, params)}#").gsub(/^The property|in schema.*$/,'') }
+          swagger_errors.map { |e| e.sub("'#", "'#{full_path(swagger_checker)}#").gsub(/^The property|in schema.*$/,'') }
         )
       end
     end
