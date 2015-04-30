@@ -53,11 +53,11 @@ context "API testing scenarios" do
   describe "missing non-required", :type => :request do
     subject { Apivore::SwaggerChecker.instance_for("/07_missing_non-required_property.json") }
 
-    it "fails" do
+    it "passes" do
       expect(subject).to validate(:get, "/services.json", 200)
     end
 
-    it "also fails" do
+    it "also passes" do
       expect(subject).to validate(:get, "/services/{id}.json", 200, { "id" => 1})
     end
   end
