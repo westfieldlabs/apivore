@@ -4,10 +4,10 @@ context "API testing scenarios" do
   include Apivore::RspecMatchers
   include Apivore::RspecHelpers
 
-  describe "undocumented path in test", :type => :request do
+  describe "unimplemented path", :type => :request do
     subject { Apivore::SwaggerChecker.instance_for("/02_unimplemented_path.json") }
     it "fails" do
-      expect(subject).to validate(:get, "/path_does_not_exist", 200)
+      expect(subject).to validate(:get, "/not_implemented.json", 200)
     end
   end
 
