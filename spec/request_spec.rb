@@ -41,7 +41,7 @@ describe "Example API", type: :apivore, order: :defined do
 
   context 'and' do
     it 'tests all documented routes' do
-      expect(subject).to document_all_paths
+      expect(subject).to validate_all_paths
     end
     # it 'has definitions consistent with the master docs' do
     #   expect(subject).to be_consistent_with_swagger_definitions(

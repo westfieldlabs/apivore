@@ -1,5 +1,5 @@
 require 'apivore/validator'
-require 'apivore/all_documented_routes_tested'
+require 'apivore/all_routes_tested_validator'
 
 module Apivore
   module RspecHelpers
@@ -7,8 +7,8 @@ module Apivore
       Validator.new(method, path, response_code, params)
     end
 
-    def document_all_paths
-      AllDocumentedRoutesTested.new
+    def validate_all_paths
+      AllRoutesTestedValidator.new
     end
   end
 end

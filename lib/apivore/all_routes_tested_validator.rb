@@ -1,5 +1,5 @@
 module Apivore
-  class AllDocumentedRoutesTested
+  class AllRoutesTestedValidator
 
     def matches?(swagger_checker)
       @errors = []
