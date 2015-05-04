@@ -1,31 +1,53 @@
 require 'spec_helper'
-include Apivore::RspecBuilder
 
-describe "Example API", :type => :request do
+describe "Example API", type: :apivore, order: :defined do
+  subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
 
-  apivore_setup '/services/{id}.json', 'get', '200' do
-    {'id' => 1}
+  context "has valid paths" do
+    it do
+      expect(subject).to validate(:get, "/services.json", 200)
+    end
+
+    it do
+      expect(subject).to validate(
+        :post, "/services.json", 204, {'name' => 'hello world'}
+      )
+    end
+
+    it do
+      expect(subject).to validate(
+        :get, "/services/{id}.json", 200, {'id' => 1}
+      )
+    end
+
+    it do
+      expect(subject).to validate(
+        :put, "/services/{id}.json", 204, {'id' => 1}
+      )
+    end
+
+    it do
+      expect(subject).to validate(
+        :delete, "/services/{id}.json", 204, {'id' => 1}
+      )
+    end
+
+    it do
+      expect(subject).to validate(
+        :patch, "/services/{id}.json", 204, {'id' => 1}
+      )
+    end
   end
 
-  apivore_setup '/services.json', 'post', '204' do
-    {"_data" => {'name' => 'hello world'}}
+  context 'and' do
+    it 'tests all documented routes' do
+      expect(subject).to validate_all_paths
+    end
+    # it 'has definitions consistent with the master docs' do
+    #   expect(subject).to be_consistent_with_swagger_definitions(
+    #     "api.westfield.io", 'deal'
+    #   )
+    # end
   end
 
-  apivore_setup '/services/{id}.json', 'put', '204' do
-    {'id' => 1}
-  end
-
-  apivore_setup '/services/{id}.json', 'delete', '204' do
-    {'id' => 1}
-  end
-
-  apivore_setup '/services/{id}.json', 'patch', '204' do
-    {'id' => 1}
-  end
-
-  apivore_setup '/services.json', 'get', '200' do
-    expect(Rails.application).to receive(:call).and_call_original
-  end
-
-  validate("/swagger-doc.json")
 end
