@@ -5,8 +5,8 @@ module Apivore
       @errors = []
       swagger_checker.mappings.each do |path, methods|
         methods.each do |method, codes|
-          codes.each do |code|
-            @errors << "#{method} #{path} is undocumented for response codes #{code}"
+          codes.each do |code, _|
+            @errors << "#{method} #{path} is untested for response code #{code}"
           end
         end
       end
