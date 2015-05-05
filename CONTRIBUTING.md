@@ -5,8 +5,11 @@ Contributions can be made to this gem by following the steps below:
 First raise an issue outlining the contribution you believe needs to be included.
 
 Then fork the repository into your own GitHub account and clone it to your development environment.
+
     git clone git@github.com:your-username/apivore.git
+    
 Make sure the tests pass:
+
     rake
 
 Create a working branch off master that references the issue number of the issue you created.
@@ -14,7 +17,9 @@ Create a working branch off master that references the issue number of the issue
     git checkout -b 123_what_am_I_doing
     git push -u origin 123_what_am_I_doing
 
-Add tests for your change, make your change. Make sure the tests pass:
+Add tests for your change, make your change. Make sure all the tests pass:
+
+    rake
 
 When you are satisfied that the change you wanted to make is done, then submit a pull request for review.
 
