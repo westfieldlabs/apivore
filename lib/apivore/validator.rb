@@ -41,7 +41,8 @@ module Apivore
         if data && data[key]
           path = path.gsub "{#{key}}", data[key].to_s
         else
-          raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
+          raise URI::InvalidURIError, "No substitution data found for {#{key}}"\
+            " to test the path #{path}.", caller
         end
       end
       path + (data['_query_string'] ? "?#{data['_query_string']}" : '')
