@@ -1,8 +1,17 @@
 language: ruby
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
-
+- 2.0
+- 2.1
+- 2.2
+before_install:
+- gem install bundler
 install:
-  - bundle install --retry=3
+- bundle install --retry=3
+deploy:
+  provider: rubygems
+  api_key:
+    secure: jZLC2zhxGzE8gfAquYy3QS+Exvdw+2+EW1ZHz3FpyliiXucGt/PRV1pSLoVwync3BuciPCqVzCeWga7sa4tV3ZSLYB2bW+6/Igl7THq/dDL4jwcw0zdhywPTBLAGGSfSKCLyx+S7hWlRvwVE/zRilJsUedfh/56ggpUbu0qJ+vQ=
+  gem: apivore
+  on:
+    tags: true
+    repo: westfieldlabs/apivore
