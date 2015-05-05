@@ -25,7 +25,7 @@ When you are satisfied that the change you wanted to make is done, then submit a
 
 We like to at least comment on pull requests within a few business days (and, typically, one business day — our core team are dispersed between San Francisco and Sydney).
 
-If we suggest some changes, improvements, or alternatives then please act on them. Ensure you conform to the coding style in place. 2 spaces instead of tabs, that sort of thing.
+If we suggest some changes, improvements, or alternatives then please act on them. Please ensure you conform to the coding style in place. 2 spaces instead of tabs, that sort of thing.
 
 ## Pull requests will be rejected if they:
 
