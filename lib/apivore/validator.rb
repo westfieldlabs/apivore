@@ -25,7 +25,9 @@ module Apivore
           params['_headers'] || {}
         )
         post_checks(swagger_checker)
-        swagger_checker.remove_tested_end_point_response(path, method, expected_response_code)
+        swagger_checker.remove_tested_end_point_response(
+          path, method, expected_response_code
+        )
       end
 
       !has_errors?
@@ -41,7 +43,8 @@ module Apivore
         if data && data[key]
           path = path.gsub "{#{key}}", data[key].to_s
         else
-          raise URI::InvalidURIError, "No substitution data found for {#{key}} to test the path #{path}.\nAdd it via an:\n  apivore_setup '<path>', '<method>', '<response>' do\n    { '#{key}' => <value> }\n  end\nblock in your specs.", caller
+          raise URI::InvalidURIError, "No substitution data found for {#{key}}"\
+            " to test the path #{path}.", caller
         end
       end
       path + (data['_query_string'] ? "?#{data['_query_string']}" : '')
@@ -59,27 +62,40 @@ module Apivore
 
     def check_request_path(swagger_checker)
       if !swagger_checker.has_path?(path)
-        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{path}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have"\
+          " a documented path for #{path}"
       elsif !swagger_checker.has_method_at_path?(path, method)
-        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented path for #{method} #{path}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have"\
+          " a documented path for #{method} #{path}"
       elsif !swagger_checker.has_response_code_for_path?(path, method, expected_response_code)
-        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have a documented response code of #{expected_response_code} at path #{method} #{path}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} does not have"\
+          " a documented response code of #{expected_response_code} at path"\
+          " #{method} #{path}"
       elsif method == "get" && swagger_checker.fragment(path, method, expected_response_code).nil?
-        errors << "Swagger doc: #{swagger_checker.swagger_path} missing response model for get request with #{path} for code #{expected_response_code}"
+        errors << "Swagger doc: #{swagger_checker.swagger_path} missing"\
+          " response model for get request with #{path} for code"/
+          " #{expected_response_code}"
       end
     end
 
     def check_status_code
       if response.status != expected_response_code
-        errors << "Path #{path} did not respond with expected status code. Expected #{expected_response_code} got #{response.status}"
+        errors << "Path #{path} did not respond with expected status code."\
+          " Expected #{expected_response_code} got #{response.status}"
       end
     end
 
     def check_response_is_valid(swagger_checker)
-      swagger_errors = swagger_checker.has_matching_document_for(path, method, response.status, response_body)
+      swagger_errors = swagger_checker.has_matching_document_for(
+        path, method, response.status, response_body
+      )
       unless swagger_errors.empty?
         errors.concat(
-          swagger_errors.map { |e| e.sub("'#", "'#{full_path(swagger_checker)}#").gsub(/^The property|in schema.*$/,'') }
+          swagger_errors.map do |e|
+            e.sub("'#", "'#{full_path(swagger_checker)}#").gsub(
+              /^The property|in schema.*$/,''
+            )
+          end
         )
       end
     end
