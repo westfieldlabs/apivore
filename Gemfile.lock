@@ -5,6 +5,7 @@ PATH
       actionpack (~> 4)
       hashie (~> 3.3)
       json-schema (~> 2.5)
+      rspec (~> 3)
       rspec-expectations (~> 3.1)
       rspec-mocks (~> 3.1)
 
