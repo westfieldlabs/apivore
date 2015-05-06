@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.files       = ['lib/apivore.rb', 'lib/apivore/*', 'data/swagger_2.0_schema.json']
   s.homepage    = 'http://github.com/westfieldlabs/apivore'
   s.add_runtime_dependency 'json-schema', '~> 2.5.1'
+  s.add_runtime_dependency 'rspec', '~> 3'
   s.add_runtime_dependency 'rspec-expectations', '~> 3.1'
   s.add_runtime_dependency 'rspec-mocks', '~> 3.1'
   s.add_runtime_dependency 'actionpack', '~> 4'
