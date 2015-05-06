@@ -8,7 +8,8 @@ Gem::Specification.new do |s|
   s.description = "Automatically tests your API using its Swagger description of end-points, models, and query parameters."
   s.authors     = ["Charles Horn"]
   s.email       = 'charles.horn@gmail.com'
-  s.files       = ['lib/apivore.rb', 'lib/apivore/*', 'data/swagger_2.0_schema.json']
+  s.files       = ['lib/apivore.rb', 'data/swagger_2.0_schema.json']
+  s.files      += Dir['lib/apivore/*.rb']
   s.homepage    = 'http://github.com/westfieldlabs/apivore'
   s.add_runtime_dependency 'json-schema', '~> 2.5.1'
   s.add_runtime_dependency 'rspec', '~> 3'
