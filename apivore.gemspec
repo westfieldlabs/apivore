@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name        = 'apivore'
   s.version     = '1.0.0'
   s.date        = '2014-11-16'
-  s.summary     = "Test your API against its Swagger 2.0 spec"
+  s.summary     = "Tests your API against its Swagger 2.0 spec"
   s.description = "Tests your rails API using its Swagger description of end-points, models, and query parameters."
   s.authors     = ["Charles Horn"]
   s.email       = 'charles.horn@gmail.com'
