@@ -23,7 +23,7 @@ Add tests for your change, make your change. Make sure all the tests pass:
 
 When you are satisfied that the change you wanted to make is done, then submit a pull request for review.
 
-We like to at least comment on pull requests within a few business days (and, typically, one business day — our core team are dispersed between San Francisco and Sydney).
+We aim to respond to pull requests within a few business days, and, typically, within one business day. Our core team is dispersed between San Francisco and Sydney.
 
 If we suggest some changes, improvements, or alternatives then please act on them. Please ensure you conform to the coding style in place. 2 spaces instead of tabs, that sort of thing.
 
