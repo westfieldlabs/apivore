@@ -85,6 +85,5 @@ DEPENDENCIES
   apivore!
   pry (~> 0)
   rake (~> 10.3)
-  rspec (~> 3)
   rspec-rails (~> 3)
   test-unit (~> 3)
