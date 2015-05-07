@@ -3,8 +3,9 @@ PATH
   specs:
     apivore (1.0.0)
       actionpack (~> 4)
-      hashie (>= 3.3.1)
-      json-schema (~> 2.5.1)
+      hashie (~> 3.3)
+      json-schema (~> 2.5)
+      rspec (~> 3)
       rspec-expectations (~> 3.1)
       rspec-mocks (~> 3.1)
 
@@ -80,10 +81,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
+  activesupport (~> 4)
   apivore!
-  pry
-  rake
-  rspec
-  rspec-rails
-  test-unit
+  pry (~> 0)
+  rake (~> 10.3)
+  rspec-rails (~> 3)
+  test-unit (~> 3)
