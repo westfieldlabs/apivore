@@ -47,7 +47,7 @@ For paths that take parameters, listed in the Swagger docs like `/deals/{id}.jso
 This is accomplished by passing the params into the validates function.
 ```ruby
 context 'has valid paths' do
-  let(:params) { "id" => 1 }
+  let(:params) { { "id" => 1 } }
   specify do
     expect(subject).to validate(
       :get, '/deals/{id}.json', 200, params
