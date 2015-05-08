@@ -55,8 +55,7 @@
       "properties": {
         "id": {
           "type": "integer",
-          "description": "Service id",
-          "extra_swagger_property": "true"
+          "description": "Service id"
         }
       },
       "additionalProperties": false
