@@ -1,4 +1,3 @@
-require 'json-schema'
 require 'rspec/expectations'
 require 'net/http'
 
