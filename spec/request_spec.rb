@@ -32,7 +32,10 @@ describe "Example API", type: :apivore, order: :defined do
       )
     end
 
-    it do
+    it 'allows the same path to be tested twice' do
+      expect(subject).to validate(
+        :patch, "/services/{id}.json", 204, {'id' => 1}
+      )
       expect(subject).to validate(
         :patch, "/services/{id}.json", 204, {'id' => 1}
       )
