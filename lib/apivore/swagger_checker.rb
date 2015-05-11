@@ -29,11 +29,13 @@ module Apivore
     end
 
     def remove_tested_end_point_response(path, method, code)
-      mappings[path][method].delete(code.to_s)
-      if mappings[path][method].size == 0
-        mappings[path].delete(method)
-        if mappings[path].size == 0
-          mappings.delete(path)
+      return if untested_mappings[path].nil? ||
+        untested_mappings[path][method].nil?
+      untested_mappings[path][method].delete(code.to_s)
+      if untested_mappings[path][method].size == 0
+        untested_mappings[path].delete(method)
+        if untested_mappings[path].size == 0
+          untested_mappings.delete(path)
         end
       end
     end
@@ -42,9 +44,11 @@ module Apivore
       @swagger.base_path
     end
 
-    attr_reader :swagger_path, :mappings, :swagger
+    attr_reader :swagger_path, :untested_mappings, :swagger
 
     private
+
+    attr_reader :mappings
 
     def initialize(swagger_path)
       @swagger_path = swagger_path
@@ -84,6 +88,8 @@ module Apivore
         raise "duplicate" unless @mappings[path][method][response_code].nil?
         @mappings[path][method][response_code] = fragment
       end
+
+      @untested_mappings = JSON.parse(JSON.generate(@mappings))
     end
   end
 end

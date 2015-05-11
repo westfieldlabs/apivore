@@ -3,7 +3,7 @@ module Apivore
 
     def matches?(swagger_checker)
       @errors = []
-      swagger_checker.mappings.each do |path, methods|
+      swagger_checker.untested_mappings.each do |path, methods|
         methods.each do |method, codes|
           codes.each do |code, _|
             @errors << "#{method} #{path} is untested for response code #{code}"
