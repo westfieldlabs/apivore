@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = "Tests your rails API using its Swagger description of end-points, models, and query parameters."
   s.authors     = ["Charles Horn"]
   s.email       = 'charles.horn@gmail.com'
-  s.files       = ['lib/apivore.rb', 'data/swagger_2.0_schema.json', 'data/draft04_schema.json]
+  s.files       = ['lib/apivore.rb', 'data/swagger_2.0_schema.json', 'data/draft04_schema.json']
   s.files      += Dir['lib/apivore/*.rb']
   s.homepage    = 'http://github.com/westfieldlabs/apivore'
   s.licenses    = ['Apache 2.0', 'MIT']
