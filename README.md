@@ -102,7 +102,7 @@ limitations under the License.
 
 This project includes and makes use of the [Swagger 2.0 schema json](http://swagger.io/v2/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the [MIT license](http://opensource.org/licenses/MIT)) included here as `data/swagger_2.0_schema.json`
 
-It also includes a copy of http://json-schema.org/draft-04/schema, included as `data/draft04_schema.json`. These schemas are included to prevent network resource fetching and speed up validation times considerably.
+It also includes a copy of http://json-schema.org/draft-04/schema, included as `data/draft04_schema.json`. These schemata are included to prevent network resource fetching and speed up validation times considerably.
 
 ## Contributors
 
