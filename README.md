@@ -82,7 +82,7 @@ Run the tests as part of your normal rspec test suite, e.g., `rake spec:requests
 
 * http://json-schema.org/
 * https://github.com/swagger-api/swagger-spec
-* https://github.com/hoxworth/json-schema
+* https://github.com/ruby-json-schema/json-schema
 
 ## License
 
@@ -100,9 +100,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-This project includes and makes use of a modified version of the [Swagger 2.0 schema json](https://github.com/swagger-api/swagger-spec/blob/master/schemas/v2.0/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the [MIT license](http://opensource.org/licenses/MIT)) included here as `data/swagger_2.0_schema.json`
+This project includes and makes use of the [Swagger 2.0 schema json](http://swagger.io/v2/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the [MIT license](http://opensource.org/licenses/MIT)) included here as `data/swagger_2.0_schema.json`
 
-The modifications involve explicitly including in the previously external references to http://json-schema.org/draft-04/schema to prevent network resource fetching and speed up validation times considerably.
+It also includes a copy of http://json-schema.org/draft-04/schema, included as `data/draft04_schema.json`. These schemata are included to prevent network resource fetching and speed up validation times considerably.
 
 ## Contributors
 
