@@ -9,11 +9,9 @@ Currently supports and validates against Swagger 2.0, (see https://github.com/sw
 
 ## Installation
 
-Currently this gem is not yet on rubygems.org
+To use Apivore, add the following to your Gemfile:
 
-Install from github using the following in your Gemfile:
-
-    gem 'apivore', :github => 'westfieldlabs/apivore', :branch => 'master'
+    gem 'apivore'
 ***WARNING:*** If apivore is listed in the Gemfile _above_ rspec then some issues, specifically `NameError: uninitialized constant RSpec::Mocks`, may arise when trying to run specs.
 
 ## Usage
@@ -108,3 +106,4 @@ It also includes a copy of http://json-schema.org/draft-04/schema, included as `
 
 * Charles Horn (https://github.com/hornc)
 * Leon Dewey (https://github.com/leondewey)
+* Max Brosnahan (https://github.com/gingermusketeer)
