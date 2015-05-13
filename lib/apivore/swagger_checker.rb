@@ -25,7 +25,8 @@ module Apivore
     end
 
     def fragment(path, method, code)
-      mappings[path][method.to_s][code.to_s]
+      path_fragment = mappings[path][method.to_s][code.to_s]
+      path_fragment.dup unless path_fragment.nil?
     end
 
     def remove_tested_end_point_response(path, method, code)
