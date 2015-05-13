@@ -4,7 +4,8 @@ describe "Example API", type: :apivore, order: :defined do
   subject { Apivore::SwaggerChecker.instance_for("/swagger-doc.json") }
 
   context "has valid paths" do
-    it do
+    it 'allows the same path (with response documented) to be tested twice' do
+      expect(subject).to validate(:get, "/services.json", 200)
       expect(subject).to validate(:get, "/services.json", 200)
     end
 
@@ -32,10 +33,7 @@ describe "Example API", type: :apivore, order: :defined do
       )
     end
 
-    it 'allows the same path to be tested twice' do
-      expect(subject).to validate(
-        :patch, "/services/{id}.json", 204, {'id' => 1}
-      )
+    it do
       expect(subject).to validate(
         :patch, "/services/{id}.json", 204, {'id' => 1}
       )
