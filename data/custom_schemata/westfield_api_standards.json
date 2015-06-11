@@ -18,7 +18,8 @@
       ],
       "properties": {
         "type": {
-          "type": "string"
+          "type": "string",
+          "enum": [ "object" ]
         }
       }
     }
