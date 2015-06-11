@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "definitions": {
+      "description": "All entities defined in the 'definitions' section must include an explicit 'type: object' attribute. This forces the entity to be validated.",
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/schemaObject"
@@ -13,9 +14,7 @@
   "definitions": {
     "schemaObject": {
       "type": "object",
-      "required": [
-        "type"
-      ],
+      "required": [ "type" ],
       "properties": {
         "type": {
           "type": "string",

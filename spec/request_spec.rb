@@ -45,7 +45,7 @@ describe "Example API", type: :apivore, order: :defined do
       expect(subject).to validate_all_paths
     end
 
-    it 'conforms to an additional custom schema' do
+    it 'additionally conforms to a custom schema' do
       expect(subject).to conform_to("westfield_api_standards.json")
     end
     # it 'has definitions consistent with the master docs' do
