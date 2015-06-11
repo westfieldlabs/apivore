@@ -1,0 +1,26 @@
+{
+  "title": "Westfield API Standards",
+
+  "type": "object",
+  "properties": {
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/schemaObject"
+      }
+    }
+  },
+  "definitions": {
+    "schemaObject": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
