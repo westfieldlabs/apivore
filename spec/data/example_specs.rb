@@ -61,4 +61,15 @@ context "API testing scenarios" do
       expect(subject).to validate(:get, "/services/{id}.json", 200, { "id" => 1})
     end
   end
+
+  describe "fails custom validation" do
+    subject { Apivore::SwaggerChecker.instance_for("/08_untyped_definition.json") }
+    it "passes" do
+      expect(subject).to validate(:get, "/services.json", 200)
+    end
+
+    it "fails" do
+      expect(subject).to conform_to("westfield_api_standards.json")
+    end
+  end
 end

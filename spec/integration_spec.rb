@@ -51,4 +51,12 @@ context "Apivore tests running against a mock API" do
       expect(stdout).to match(/0 failures/)
     end
   end
+
+  describe "a swagger document not conforming to a custom schema" do
+    it 'should fail the additional validation' do
+      stdout = `rspec spec/data/example_specs.rb --example 'fails custom validation'`
+      expect(stdout).to match(/1 failure/)
+      expect(stdout).to include("The property '#/definitions/service' did not contain a required property of 'type'")
+    end
+  end
 end
