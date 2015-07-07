@@ -27,6 +27,7 @@ module Rails
         "/05_extra_properties.json",
         "/06_missing_required_property.json",
         "/07_missing_non-required_property.json",
+        "/08_untyped_definition.json",
       ]
       case "#{method} #{path}"
       when "GET /swagger-doc.json"
