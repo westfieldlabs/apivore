@@ -69,7 +69,7 @@ context "API testing scenarios" do
     end
 
     it "fails" do
-      expect(subject).to conform_to("westfield_api_standards.json")
+      expect(subject).to conform_to(Apivore::CustomSchemaValidator::WF_SCHEMA)
     end
   end
 end

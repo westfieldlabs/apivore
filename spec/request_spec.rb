@@ -46,7 +46,7 @@ describe "Example API", type: :apivore, order: :defined do
     end
 
     it 'additionally conforms to a custom schema' do
-      expect(subject).to conform_to("westfield_api_standards.json")
+      expect(subject).to conform_to(Apivore::CustomSchemaValidator::WF_SCHEMA)
     end
     # it 'has definitions consistent with the master docs' do
     #   expect(subject).to be_consistent_with_swagger_definitions(
