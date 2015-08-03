@@ -74,6 +74,15 @@ expect(subject).to validate(
 )
 ```
 
+Your Swagger.json can be validated against additional custom schemata, for example to enforce organisation API documentation standards, by using the following syntax:
+
+```ruby
+it 'additionally conforms to a custom schema' do
+  expect(subject).to conform_to("<your custom schema>.json")
+end
+```
+We have included an example [here] (data/custom_schemata/westfield_api_standards.json). The file path to this custom schema is stored in `Apivore::CustomSchemaValidator::WF_SCHEMA`, if you wish to use it. 
+
 Run the tests as part of your normal rspec test suite, e.g., `rake spec:requests`
 
 ## Useful Resources
