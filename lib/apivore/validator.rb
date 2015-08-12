@@ -73,7 +73,7 @@ module Apivore
           " #{method} #{path}"
       elsif method == "get" && swagger_checker.fragment(path, method, expected_response_code).nil?
         errors << "Swagger doc: #{swagger_checker.swagger_path} missing"\
-          " response model for get request with #{path} for code"/
+          " response model for get request with #{path} for code"\
           " #{expected_response_code}"
       end
     end
