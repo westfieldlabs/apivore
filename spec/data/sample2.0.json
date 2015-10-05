@@ -49,7 +49,7 @@
             "in": "path",
             "description": "Service identifier.",
             "required": true,
-            "type": "string"
+            "type": "integer"
           }
         ],
         "get": {
