@@ -46,8 +46,9 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "description": "Service identifier.",
+            "required": true,
             "type": "string"
           }
         ],
