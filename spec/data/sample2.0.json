@@ -43,6 +43,15 @@
         }
       },
       "/services/{id}.json": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Service identifier.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
         "get": {
           "description": "Returns a service.",
           "operationId": "Services#show",
