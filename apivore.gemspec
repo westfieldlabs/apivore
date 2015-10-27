@@ -2,8 +2,8 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'apivore'
-  s.version     = '1.3.1'
-  s.date        = '2015-07-31'
+  s.version     = '1.4.0'
+  s.date        = '2015-10-27'
   s.summary     = "Tests your API against its Swagger 2.0 spec"
   s.description = "Tests your rails API using its Swagger description of end-points, models, and query parameters."
   s.authors     = ["Charles Horn"]
