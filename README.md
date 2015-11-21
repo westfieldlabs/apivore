@@ -70,7 +70,7 @@ Post parameters can be specified with the `_data` key as follows:
 
 ```ruby
 expect(subject).to validate(
-  :get '/deals', 200, {"_data" => {'title' => 'Hello World'} }
+  :post '/deals', 200, {"_data" => {'title' => 'Hello World'} }
 )
 ```
 
