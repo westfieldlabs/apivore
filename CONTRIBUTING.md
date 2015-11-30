@@ -10,7 +10,7 @@ Then fork the repository into your own GitHub account and clone it to your devel
     
 Make sure the tests pass:
 
-    rake
+    rspec
 
 Create a working branch off master that references the issue number of the issue you created.
 
@@ -19,7 +19,7 @@ Create a working branch off master that references the issue number of the issue
 
 Add tests for your change, make your change. Make sure all the tests pass:
 
-    rake
+    rspec
 
 When you are satisfied that the change you wanted to make is done, then submit a pull request for review.
 
