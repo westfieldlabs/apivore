@@ -26,6 +26,7 @@ module Apivore
 
     def each_response(&block)
       paths.each do |path, path_data|
+        next if vendor_specific_tag? path
         path_data.each do |verb, method_data|
           next if NONVERB_PATH_ITEMS.include?(verb)
           raise "No responses found in swagger for path '#{path}', method #{verb}: #{method_data.inspect}" if method_data.responses.nil?
@@ -39,5 +40,10 @@ module Apivore
         end
       end
     end
+
+    def vendor_specific_tag? tag
+      tag =~ /\Ax-.*/
+    end
+
   end
 end
