@@ -16,7 +16,6 @@
     "application/json"
   ],
   "paths": {
-    "x-something": "Vendor Specific Tag",
     "/not_implemented.json": {
       "get": {
         "description": "To test a documented path which is not implemented",

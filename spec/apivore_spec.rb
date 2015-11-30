@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Apivore::Swagger' do
 
   context 'with valid swagger 2.0 input' do
-    let(:doc) { IO.read(File.join(File.dirname(__FILE__), "data", "sample2.0.json")) }
+    let(:doc) { IO.read(File.join(File.dirname(__FILE__), "data", "01_sample2.0.json")) }
     let(:swagger) { Apivore::Swagger.new(JSON.parse(doc)) }
 
     subject { swagger }
