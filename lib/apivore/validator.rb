@@ -81,7 +81,8 @@ module Apivore
     def check_status_code
       if response.status != expected_response_code
         errors << "Path #{path} did not respond with expected status code."\
-          " Expected #{expected_response_code} got #{response.status}"
+          " Expected #{expected_response_code} got #{response.status}"\
+          "\nResponse body: #{response.body}"
       end
     end
 
