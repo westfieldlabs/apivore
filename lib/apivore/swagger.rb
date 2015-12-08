@@ -29,7 +29,11 @@ module Apivore
         next if vendor_specific_tag? path
         path_data.each do |verb, method_data|
           next if NONVERB_PATH_ITEMS.include?(verb)
-          raise "No responses found in swagger for path '#{path}', method #{verb}: #{method_data.inspect}" if method_data.responses.nil?
+          next if vendor_specific_tag? verb
+          if method_data.responses.nil?
+            raise "No responses found in swagger for path '#{path}', " \
+              "method #{verb}: #{method_data.inspect}"
+          end
           method_data.responses.each do |response_code, response_data|
             schema_location = nil
             if response_data.schema

@@ -18,6 +18,7 @@
   "paths": {
     "x-something": "Vendor Specific Tag",
     "/services.json": {
+      "x-something": "Vendor Specific Tag",
       "get": {
         "description": "Services available to shoppers.",
         "operationId": "Services#index",
