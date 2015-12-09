@@ -45,7 +45,11 @@ module Apivore
       @swagger.base_path
     end
 
-    attr_reader :swagger_path, :untested_mappings, :swagger
+    def response=(response)
+      @response = response
+    end
+
+    attr_reader :response, :swagger, :swagger_path, :untested_mappings
 
     private
 

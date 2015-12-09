@@ -24,6 +24,7 @@ module Apivore
           params['_data'] || {},
           params['_headers'] || {}
         )
+        swagger_checker.response = response
         post_checks(swagger_checker)
         swagger_checker.remove_tested_end_point_response(
           path, method, expected_response_code
