@@ -17,7 +17,12 @@ module Apivore
     def matches?(swagger_checker)
       pre_checks(swagger_checker)
 
-      unless has_errors?
+      if has_errors?
+        puts "XXXXXXXXXXXXXXXX"
+        puts "Response body for '#{method} #{full_path(swagger_checker)}'\n"
+        puts JSON.pretty_generate(JSON.parse(response.body))
+        puts "XXXXXXXXXXXXXXXX"
+      else
         send(
           method,
           full_path(swagger_checker),
