@@ -24,6 +24,7 @@ module Apivore
           params['_data'] || {},
           params['_headers'] || {}
         )
+        swagger_checker.response = response
         post_checks(swagger_checker)
         swagger_checker.remove_tested_end_point_response(
           path, method, expected_response_code
@@ -81,7 +82,8 @@ module Apivore
     def check_status_code
       if response.status != expected_response_code
         errors << "Path #{path} did not respond with expected status code."\
-          " Expected #{expected_response_code} got #{response.status}"
+          " Expected #{expected_response_code} got #{response.status}"\
+          "\nResponse body: #{response.body}"
       end
     end
 
