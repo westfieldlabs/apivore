@@ -27,7 +27,7 @@ module Apivore
         swagger_checker.response = response
         post_checks(swagger_checker)
 
-        if has_errors?
+        if has_errors? && response.body.length > 0
           puts "XXXXXXXXXXXXXXXX"
           puts "Response body for '#{method} #{full_path(swagger_checker)}'\n"
           puts JSON.pretty_generate(JSON.parse(response.body))
