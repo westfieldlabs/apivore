@@ -17,12 +17,7 @@ module Apivore
     def matches?(swagger_checker)
       pre_checks(swagger_checker)
 
-      if has_errors?
-        puts "XXXXXXXXXXXXXXXX"
-        puts "Response body for '#{method} #{full_path(swagger_checker)}'\n"
-        puts JSON.pretty_generate(JSON.parse(response.body))
-        puts "XXXXXXXXXXXXXXXX"
-      else
+      unless has_errors?
         send(
           method,
           full_path(swagger_checker),
@@ -31,6 +26,14 @@ module Apivore
         )
         swagger_checker.response = response
         post_checks(swagger_checker)
+
+        if has_errors?
+          puts "XXXXXXXXXXXXXXXX"
+          puts "Response body for '#{method} #{full_path(swagger_checker)}'\n"
+          puts JSON.pretty_generate(JSON.parse(response.body))
+          puts "XXXXXXXXXXXXXXXX"
+        end
+
         swagger_checker.remove_tested_end_point_response(
           path, method, expected_response_code
         )
@@ -76,7 +79,8 @@ module Apivore
       elsif !swagger_checker.has_response_code_for_path?(path, method, expected_response_code)
         errors << "Swagger doc: #{swagger_checker.swagger_path} does not have"\
           " a documented response code of #{expected_response_code} at path"\
-          " #{method} #{path}"
+          " #{method} #{path}. "\
+          "\n             Available response codes: #{swagger_checker.response_codes_for_path(path, method)}"
       elsif method == "get" && swagger_checker.fragment(path, method, expected_response_code).nil?
         errors << "Swagger doc: #{swagger_checker.swagger_path} missing"\
           " response model for get request with #{path} for code"\
