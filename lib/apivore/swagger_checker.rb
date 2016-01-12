@@ -18,6 +18,10 @@ module Apivore
       mappings[path][method].has_key?(code.to_s)
     end
 
+    def response_codes_for_path(path, method)
+      mappings[path][method].keys.join(", ")
+    end
+
     def has_matching_document_for(path, method, code, body)
       JSON::Validator.fully_validate(
         swagger, body, fragment: fragment(path, method, code)
