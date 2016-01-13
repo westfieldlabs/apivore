@@ -28,10 +28,7 @@ module Apivore
         post_checks(swagger_checker)
 
         if has_errors? && response.body.length > 0
-          puts "XXXXXXXXXXXXXXXX"
-          puts "Response body for '#{method} #{full_path(swagger_checker)}'\n"
-          puts JSON.pretty_generate(JSON.parse(response.body))
-          puts "XXXXXXXXXXXXXXXX"
+          errors << "\nResponse body:\n #{JSON.pretty_generate(JSON.parse(response.body))}"
         end
 
         swagger_checker.remove_tested_end_point_response(
@@ -58,7 +55,6 @@ module Apivore
       end
       path + (data['_query_string'] ? "?#{data['_query_string']}" : '')
     end
-
 
     def pre_checks(swagger_checker)
       check_request_path(swagger_checker)
@@ -92,7 +88,6 @@ module Apivore
       if response.status != expected_response_code
         errors << "Path #{path} did not respond with expected status code."\
           " Expected #{expected_response_code} got #{response.status}"\
-          "\nResponse body: #{response.body}"
       end
     end
 
