@@ -3,9 +3,9 @@
 [![Code Climate](https://codeclimate.com/github/westfieldlabs/apivore/badges/gpa.svg)](https://codeclimate.com/github/westfieldlabs/apivore)
 # Apivore
 
-Automatically tests your rails API against its Swagger description of end-points, models, and query parameters.
+Automatically tests your rails API against its OpenAPI (Swagger) description of end-points, models, and query parameters.
 
-Currently supports and validates against Swagger 2.0, (see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
+Currently supports and validates against OpenAPI 2.0, (see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 
 ## Installation
 
@@ -88,7 +88,7 @@ Run the tests as part of your normal rspec test suite, e.g., `rake spec:requests
 ## Useful Resources
 
 * http://json-schema.org/
-* https://github.com/swagger-api/swagger-spec
+* https://github.com/OAI/OpenAPI-Specification
 * https://github.com/ruby-json-schema/json-schema
 
 ## License
@@ -107,7 +107,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-This project includes and makes use of the [Swagger 2.0 schema json](http://swagger.io/v2/schema.json) (Copyright 2014 Reverb Technologies, Inc. Released under the [MIT license](http://opensource.org/licenses/MIT)) included here as `data/swagger_2.0_schema.json`
+This project includes and makes use of the [OpenAPI (Swagger) 2.0 schema json](http://swagger.io/v2/schema.json) (Copyright 2016 The Linux Foundation. Released under the [Apache License](http://www.apache.org/licenses/LICENSE-2.0)) included here as `data/swagger_2.0_schema.json`
 
 It also includes a copy of http://json-schema.org/draft-04/schema, included as `data/draft04_schema.json`. These schemata are included to prevent network resource fetching and speed up validation times considerably.
 
