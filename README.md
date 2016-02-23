@@ -3,9 +3,9 @@
 [![Code Climate](https://codeclimate.com/github/westfieldlabs/apivore/badges/gpa.svg)](https://codeclimate.com/github/westfieldlabs/apivore)
 # Apivore
 
-Automatically tests your rails API against its Swagger description of end-points, models, and query parameters.
+Automatically tests your rails API against its OpenAPI (Swagger) description of end-points, models, and query parameters.
 
-Currently supports and validates against Swagger 2.0, (see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
+Currently supports and validates against OpenAPI 2.0, (see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 
 ## Installation
 
