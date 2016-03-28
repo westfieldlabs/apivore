@@ -4,7 +4,7 @@ require 'net/http'
 module Apivore
   module RspecMatchers
     extend RSpec::Matchers::DSL
-    matcher :be_consistent_with_swagger_definitions do |master_swagger_host, current_service|
+    matcher :be_consistent_with_swagger_definitions do |master_swagger_url, current_service|
 
       attr_reader :actual, :expected
 
@@ -22,8 +22,18 @@ module Apivore
       end
 
       define_method :fetch_master_swagger do
-        req = Net::HTTP.get(master_swagger_host, "/swagger.json")
-        JSON.parse(req)
+        res =
+          if master_swagger_url.starts_with? 'http'
+            Net::HTTP.get_response(URI(master_swagger_url))
+          else
+            Net::HTTP.get_response(master_swagger_url, "/swagger.json")
+          end
+
+        unless res.is_a? Net::HTTPSuccess
+          message = "Master swagger at #{master_swagger_url} not accessible\n"
+          fail (message + res.body)
+        end
+        JSON.parse(res.body)
       end
 
       define_method :master_swagger do
