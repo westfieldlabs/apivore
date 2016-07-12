@@ -34,11 +34,16 @@ module Apivore
             raise "No responses found in swagger for path '#{path}', " \
               "method #{verb}: #{method_data.inspect}"
           end
+
           method_data.responses.each do |response_code, response_data|
-            schema_location = nil
-            if response_data.schema
-              schema_location = Fragment.new ['#', 'paths', path, verb, 'responses', response_code, 'schema']
-            end
+            schema_location =
+              case
+              when response_data.schema
+                Fragment.new(['#', 'paths', path, verb, 'responses', response_code, 'schema'])
+              when (ref = response_data['$ref'])
+                Fragment.new(ref.split('/'))
+              end
+
             block.call(path, verb, response_code, schema_location)
           end
         end

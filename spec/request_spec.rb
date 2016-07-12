@@ -38,6 +38,12 @@ describe "Example API", type: :apivore, order: :defined do
         :patch, "/services/{id}.json", 204, {'id' => 1}
       )
     end
+
+    it do
+      expect(subject).to validate(
+        :get, "/services/{id}/with_response_definition.json", 200, {'id' => 1}
+      )
+    end
   end
 
   context 'and' do

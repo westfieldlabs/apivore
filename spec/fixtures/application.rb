@@ -44,6 +44,8 @@ module Rails
         respond_with 204
       when "PATCH /api/services/1.json"
         respond_with 204
+      when "GET /api/services/1/with_response_definition.json"
+        respond_with 200
       else
         if test_swagger_files.include?(path)
           respond_with 200, File.read(File.expand_path("../../data#{path}", __FILE__))

@@ -31,7 +31,8 @@ describe 'Apivore::Swagger' do
           ["/services/{id}.json", "get", "200", ['#', 'paths', '/services/{id}.json', 'get', 'responses', '200', 'schema']],
           ["/services/{id}.json", "put", "204", nil],
           ["/services/{id}.json", "delete", "204", nil],
-          ["/services/{id}.json", "patch", "204", nil]
+          ["/services/{id}.json", "patch", "204", nil],
+          ["/services/{id}/with_response_definition.json", "get", "200", ['#', 'responses', 'sample_response']]
         )
       end
     end
