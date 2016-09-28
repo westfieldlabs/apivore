@@ -21,8 +21,8 @@ module Apivore
         send(
           method,
           full_path(swagger_checker),
-          params['_data'] || {},
-          params['_headers'] || {}
+          params: (params['_data'] || {}),
+          headers: (params['_headers'] || {})
         )
         swagger_checker.response = response
         post_checks(swagger_checker)
