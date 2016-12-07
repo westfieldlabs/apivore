@@ -74,6 +74,14 @@ expect(subject).to validate(
 )
 ```
 
+HTTP headers can be specified via the `_headers` key:
+
+```ruby
+expect(subject).to validate(
+  :get '/deals', 200, {"_headers" => {'accept' => 'application/json'} }
+)
+```
+
 Your Swagger.json can be validated against additional custom schemata, for example to enforce organisation API documentation standards, by using the following syntax:
 
 ```ruby
