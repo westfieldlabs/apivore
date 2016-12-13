@@ -2,7 +2,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'apivore'
-  s.version     = '1.6.0'
+  s.version     = '1.6.1'
   s.date        = '2016-02-24'
   s.summary     = "Tests your API against its OpenAPI (Swagger) 2.0 spec"
   s.description = "Tests your rails API using its OpenAPI (Swagger) description of end-points, models, and query parameters."
@@ -18,12 +18,20 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rspec', '~> 3'
   s.add_runtime_dependency 'rspec-expectations', '~> 3.1'
   s.add_runtime_dependency 'rspec-mocks', '~> 3.1'
-  s.add_runtime_dependency 'actionpack', '>= 4', '< 6'
   s.add_runtime_dependency 'hashie', '~> 3.3'
   s.add_development_dependency 'pry', '~> 0'
   s.add_development_dependency 'rake', '~> 10.3'
   s.add_development_dependency 'rspec-rails', '~> 3'
   s.add_development_dependency 'activesupport', '>= 4', '< 6'
+
+  # Rails 5 stopped support for ruby < 2.2.2
+  # Hack to support currently suported ruby versions
+  # TODO: remove and explicitly require ruby 2.2.2 as min version in version 2 of apivore
+  if RUBY_VERSION >= '2.2.2'
+    s.add_runtime_dependency 'actionpack', '>= 4', '< 6'
+  else
+    s.add_runtime_dependency 'actionpack', '< 5'
+  end
 
   if RUBY_VERSION >= '2.2.0'
     s.add_development_dependency 'test-unit', '~> 3'
