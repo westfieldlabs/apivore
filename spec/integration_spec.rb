@@ -13,7 +13,7 @@ context "Apivore tests running against a mock API" do
     it 'should show which path and field has the problem' do
       stdout = `rspec spec/data/example_specs.rb --example 'mismatched property type'`
       expect(stdout).to match(/1 failure/)
-      expect(stdout).to include("'/api/services/1.json#/name' of type String did not match one or more of the following types: integer, null")
+      expect(stdout).to include("'/api/services/1.json#/name' of type string did not match one or more of the following types: integer, null")
     end
   end
 
