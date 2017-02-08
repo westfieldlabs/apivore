@@ -1,5 +1,6 @@
 require 'action_controller'
 require 'action_dispatch'
+require 'apivore/rails_shim'
 
 module Apivore
   class Validator
@@ -20,9 +21,11 @@ module Apivore
       unless has_errors?
         send(
           method,
-          full_path(swagger_checker),
-          params['_data'] || {},
-          params['_headers'] || {}
+          *RailsShim.action_dispatch_request_args(
+            full_path(swagger_checker),
+            params: params['_data'] || {},
+            headers: params['_headers'] || {}
+          )
         )
         swagger_checker.response = response
         post_checks(swagger_checker)
