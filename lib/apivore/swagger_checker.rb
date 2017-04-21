@@ -3,7 +3,19 @@ module Apivore
     PATH_TO_CHECKER_MAP = {}
 
     def self.instance_for(path)
-      PATH_TO_CHECKER_MAP[path] ||= new(path)
+      PATH_TO_CHECKER_MAP[path] ||= from_local_route(path)
+    end
+
+    def self.from_local_route(swagger_path)
+      session = ActionDispatch::Integration::Session.new(Rails.application)
+
+      begin
+        session.get(swagger_path)
+      rescue
+        fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+      end
+
+      new(Apivore::Swagger.new(JSON.parse(session.response.body)))
     end
 
     def has_path?(path)
@@ -53,31 +65,17 @@ module Apivore
       @response = response
     end
 
-    attr_reader :response, :swagger, :swagger_path, :untested_mappings
+    attr_reader :response, :swagger, :untested_mappings
 
     private
 
     attr_reader :mappings
 
-    def initialize(swagger_path)
-      @swagger_path = swagger_path
-      load_swagger_doc!
+    def initialize(swagger)
+      @swagger = swagger
+
       validate_swagger!
       setup_mappings!
-    end
-
-    def load_swagger_doc!
-      @swagger = Apivore::Swagger.new(fetch_swagger!)
-    end
-
-    def fetch_swagger!
-      session = ActionDispatch::Integration::Session.new(Rails.application)
-      begin
-        session.get(swagger_path)
-      rescue
-        fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
-      end
-       JSON.parse(session.response.body)
     end
 
     def validate_swagger!
