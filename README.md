@@ -12,12 +12,16 @@ Currently supports and validates against OpenAPI 2.0, (see https://github.com/OA
 To use Apivore, add the following to your Gemfile:
 
     gem 'apivore'
+
 ***WARNING:*** If apivore is listed in the Gemfile _above_ rspec then some issues, specifically `NameError: uninitialized constant RSpec::Mocks`, may arise when trying to run specs.
 
 ## Usage
 
 Create a new request spec in spec/requests:
 ```ruby
+# Rails users
+require 'rails_helper'
+# Everyone else
 require 'spec_helper'
 
 RSpec.describe 'the API', type: :apivore, order: :defined do
@@ -89,7 +93,7 @@ it 'additionally conforms to a custom schema' do
   expect(subject).to conform_to("<your custom schema>.json")
 end
 ```
-We have included an example [here] (data/custom_schemata/westfield_api_standards.json). The file path to this custom schema is stored in `Apivore::CustomSchemaValidator::WF_SCHEMA`, if you wish to use it. 
+We have included an example [here] (data/custom_schemata/westfield_api_standards.json). The file path to this custom schema is stored in `Apivore::CustomSchemaValidator::WF_SCHEMA`, if you wish to use it.
 
 Run the tests as part of your normal rspec test suite, e.g., `rake spec:requests`
 
