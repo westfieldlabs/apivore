@@ -1,4 +1,5 @@
 *.gem
 .bundle
+.ruby-version
 Gemfile.lock
 pkg
