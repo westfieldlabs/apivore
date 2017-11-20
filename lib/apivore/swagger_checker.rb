@@ -72,12 +72,29 @@ module Apivore
 
     def fetch_swagger!
       session = ActionDispatch::Integration::Session.new(Rails.application)
+      body = nil
+      http_error = true
+
       begin
-        session.get(swagger_path)
-      rescue
-        fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+        response_code = session.get(swagger_path)
+
+        if response_code == 200
+          http_error = false
+          body = session.response.body
+        end
+      rescue URI::InvalidURIError
+        # http_error is true
       end
-       JSON.parse(session.response.body)
+
+      if http_error
+        begin
+          open(swagger_path) {|file| body = file.read }
+        rescue Errno::ENOENT
+          fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+        end
+      end
+
+      JSON.parse(body)
     end
 
     def validate_swagger!
