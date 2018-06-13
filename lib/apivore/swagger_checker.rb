@@ -24,7 +24,7 @@ module Apivore
 
     def has_matching_document_for(path, method, code, body)
       JSON::Validator.fully_validate(
-        swagger, body, fragment: fragment(path, method, code)
+        swagger.to_json, body, fragment: fragment(path, method, code)
       )
     end
 
