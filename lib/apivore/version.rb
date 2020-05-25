@@ -1,3 +1,3 @@
 module Apivore
-  VERSION = "1.6.2"
+  VERSION = "2.0.0.beta1"
 end
