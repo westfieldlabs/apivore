@@ -4,6 +4,8 @@ require 'apivore/fragment'
 
 module Apivore
   class Swagger < Hashie::Mash
+    disable_warnings
+
     NONVERB_PATH_ITEMS = %q(parameters)
 
     def validate
